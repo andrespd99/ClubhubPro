@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "296606963668",
+    "firebase_url": "https://clubhub-200af.firebaseio.com",
+    "project_id": "clubhub-200af",
+    "storage_bucket": "clubhub-200af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296606963668:android:d8c2f8b22985dcec7e2841",
+        "android_client_info": {
+          "package_name": "com.company.clubhubpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296606963668-ovv1odjdfdrr4vv23o1trba4c5uk3pqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHB1FMIIDLkqO0rvvS1uhhhAGX-5KEcRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296606963668-ovv1odjdfdrr4vv23o1trba4c5uk3pqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296606963668:android:1cf5901696b39e1f7e2841",
+        "android_client_info": {
+          "package_name": "com.example.clubhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296606963668-ovv1odjdfdrr4vv23o1trba4c5uk3pqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHB1FMIIDLkqO0rvvS1uhhhAGX-5KEcRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296606963668-ovv1odjdfdrr4vv23o1trba4c5uk3pqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
