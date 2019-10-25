@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'addFriend.dart';
 import 'invitationCheckout.dart';
 
-var invitedList = <String>[];
-var friendsList = List<String>.generate(6, (i) => "Amigo $i");
+// var invitedList = <String>[];
+// var friendsList = List<String>.generate(6, (i) => "Amigo $i");
 
 class Invitaciones extends StatefulWidget {
   InvitacionesState createState() => InvitacionesState();
@@ -33,7 +33,7 @@ class InvitacionesState extends State<Invitaciones> {
             Container(
               width: 420.0,
               height: 260.0,
-              child: _invitedListView(),
+              // child: _invitedListView(),
               decoration: BoxDecoration(
                   border: Border.all(
                 color: Colors.grey,
@@ -49,7 +49,7 @@ class InvitacionesState extends State<Invitaciones> {
             Container(
               width: 420.0,
               height: 260.0,
-              child: _friendsListView(),
+              // child: _friendsListView(),
               decoration: BoxDecoration(
                   border: Border.all(
                 color: Colors.grey,
@@ -81,119 +81,119 @@ class InvitacionesState extends State<Invitaciones> {
     );
   }
 
-  Widget _buildItem(String item, Animation animation) {
-    return SizeTransition(
-      sizeFactor: animation,
-      child: Card(
-        child: ListTile(
-          title: Text(
-            item,
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-      ),
-    );
-  }
+//   Widget _buildItem(String item, Animation animation) {
+//     return SizeTransition(
+//       sizeFactor: animation,
+//       child: Card(
+//         child: ListTile(
+//           title: Text(
+//             item,
+//             style: TextStyle(fontSize: 20),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
 
-  void _insertSingleItem() {
-    String newItem = "Planet";
-    // Arbitrary location for demonstration purposes
-    int insertIndex = 2;
-    // Add the item to the data list.
-    //_data.insert(insertIndex, newItem);
-    // Add the item visually to the AnimatedList.
-    //_listKey.currentState.insertItem(insertIndex);
-  }
+//   void _insertSingleItem() {
+//     String newItem = "Planet";
+//     // Arbitrary location for demonstration purposes
+//     int insertIndex = 2;
+//     // Add the item to the data list.
+//     //_data.insert(insertIndex, newItem);
+//     // Add the item visually to the AnimatedList.
+//     //_listKey.currentState.insertItem(insertIndex);
+//   }
 
-  void _removeSingleItem() {
-    int removeIndex = 2;
-    // Remove item from data list but keep copy to give to the animation.
-    //String removedItem = _data.removeAt(removeIndex);
-    // This builder is just for showing the row while it is still
-    // animating away. The item is already gone from the data list.
-    AnimatedListRemovedItemBuilder builder = (context, animation) {
-      //return _buildItem(removedItem, animation);
-    };
-    // Remove the item visually from the AnimatedList.
-    //_listKey.currentState.removeItem(removeIndex, builder);
-  }
+//   void _removeSingleItem() {
+//     int removeIndex = 2;
+//     // Remove item from data list but keep copy to give to the animation.
+//     //String removedItem = _data.removeAt(removeIndex);
+//     // This builder is just for showing the row while it is still
+//     // animating away. The item is already gone from the data list.
+//     AnimatedListRemovedItemBuilder builder = (context, animation) {
+//       //return _buildItem(removedItem, animation);
+//     };
+//     // Remove the item visually from the AnimatedList.
+//     //_listKey.currentState.removeItem(removeIndex, builder);
+//   }
 
-  Widget _invitedListView() {
-    return ListView.separated(
-      itemCount: _invitedListSize(),
-      itemBuilder: (context, index) {
-        var item = invitedList[index];
+//   Widget _invitedListView() {
+//     return ListView.separated(
+//       itemCount: _invitedListSize(),
+//       itemBuilder: (context, index) {
+//         var item = invitedList[index];
 
-        return Dismissible(
-          key: Key(item),
-          onDismissed: (direction) {
-            setState(() {
-              friendsList.add(item);
-              invitedList.removeAt(index);
-            });
+//         return Dismissible(
+//           key: Key(item),
+//           onDismissed: (direction) {
+//             setState(() {
+//               friendsList.add(item);
+//               invitedList.removeAt(index);
+//             });
 
-            Scaffold.of(context)
-                .showSnackBar(SnackBar(content: Text("$item dismissed")));
-          },
-          background: Container(color: Colors.red),
-          child: ListTile(title: Text("$item")),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
-    );
-  }
+//             Scaffold.of(context)
+//                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
+//           },
+//           background: Container(color: Colors.red),
+//           child: ListTile(title: Text("$item")),
+//         );
+//       },
+//       separatorBuilder: (context, index) {
+//         return Divider();
+//       },
+//     );
+//   }
 
-  Widget _friendsListView() {
-    return ListView.separated(
-      itemCount: _friendsListSize(),
-      itemBuilder: (context, index) {
-        var item = friendsList[index];
+//   Widget _friendsListView() {
+//     return ListView.separated(
+//       itemCount: _friendsListSize(),
+//       itemBuilder: (context, index) {
+//         var item = friendsList[index];
 
-        return Dismissible(
-          key: Key(item),
-          onDismissed: (direction) {
-            setState(() {
-              invitedList.add(item);
-              friendsList.removeAt(index);
-            });
+//         return Dismissible(
+//           key: Key(item),
+//           onDismissed: (direction) {
+//             setState(() {
+//               invitedList.add(item);
+//               friendsList.removeAt(index);
+//             });
 
-            Scaffold.of(context)
-                .showSnackBar(SnackBar(content: Text("$item dismissed")));
-          },
-          background: Container(color: Colors.green),
-          child: ListTile(title: Text("$item")),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
-    );
-  }
+//             Scaffold.of(context)
+//                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
+//           },
+//           background: Container(color: Colors.green),
+//           child: ListTile(title: Text("$item")),
+//         );
+//       },
+//       separatorBuilder: (context, index) {
+//         return Divider();
+//       },
+//     );
+//   }
 
-  int _friendsListSize() {
-    if (friendsList.isEmpty)
-      return 0;
-    else
-      return friendsList.length;
-  }
+//   int _friendsListSize() {
+//     if (friendsList.isEmpty)
+//       return 0;
+//     else
+//       return friendsList.length;
+//   }
 
-  int _invitedListSize() {
-    if (invitedList.isEmpty)
-      return 0;
-    else
-      return invitedList.length;
-  }
-}
+//   int _invitedListSize() {
+//     if (invitedList.isEmpty)
+//       return 0;
+//     else
+//       return invitedList.length;
+//   }
+// }
 
-void addFriendToList() {
-  friendsList.add("Nuevo amigo");
-}
+// void addFriendToList() {
+//   friendsList.add("Nuevo amigo");
+// }
 
-int invitedListSize() {
-  if (invitedList.isEmpty)
-    return 0;
-  else
-    return invitedList.length;
-}
+// int invitedListSize() {
+//   if (invitedList.isEmpty)
+//     return 0;
+//   else
+//     return invitedList.length;
+ }

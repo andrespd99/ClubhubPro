@@ -80,7 +80,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                 if (_formKey.currentState.validate()) {
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
-                  addFriendToList();
+                  // addFriendToList();
                   Navigator.pop(context); 
                 }
               },

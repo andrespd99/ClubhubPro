@@ -12,7 +12,7 @@ class InvitationCheckout extends StatefulWidget {
 
 class InvitationCheckoutState extends State<InvitationCheckout> {
   static final invitationPrice = 56000.00;
-  var total = invitedList.length * invitationPrice;
+  // var total = invitedList.length * invitationPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class InvitationCheckoutState extends State<InvitationCheckout> {
               Container(
                 width: 420.0,
                 height: 260.0,
-                child: _invitedListView(),
+                // child: _invitedListView(),
                 decoration: BoxDecoration(
                     border: Border.all(
                   color: Colors.grey,
@@ -39,7 +39,7 @@ class InvitationCheckoutState extends State<InvitationCheckout> {
               SizedBox(height: 20.0),
               Column(
                 children: <Widget>[
-                  Text("Total: $total Bs.S", style: TextStyle(fontSize: 20.0)),
+                  // Text("Total: $total Bs.S", style: TextStyle(fontSize: 20.0)),
                   Text("Precio por invitacion: $invitationPrice",
                       style: TextStyle(fontSize: 15.0),
                       textAlign: TextAlign.right),
@@ -61,19 +61,19 @@ class InvitationCheckoutState extends State<InvitationCheckout> {
     );
   }
 
-  Widget _invitedListView() {
-    return ListView.separated(
-      itemCount: invitedListSize(),
-      itemBuilder: (context, index) {
-        var item = invitedList[index];
+  // Widget _invitedListView() {
+  //   return ListView.separated(
+  //     itemCount: invitedListSize(),
+  //     itemBuilder: (context, index) {
+  //       var item = invitedList[index];
 
-        return ListTile(title: Text("$item"));
-      },
-      separatorBuilder: (context, index) {
-        return Divider();
-      },
-    );
-  }
+  //       return ListTile(title: Text("$item"));
+  //     },
+  //     separatorBuilder: (context, index) {
+  //       return Divider();
+  //     },
+  //   );
+  // }
 
   void emptyInviteList() {
     /* var x;

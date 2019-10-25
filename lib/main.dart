@@ -1,159 +1,95 @@
-import 'package:clubhub/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:clubhub/Calendario.dart';
-import 'package:clubhub/add_socio.dart';
-import 'package:clubhub/admin_panel.dart';
-import 'package:clubhub/invitaciones.dart';
-import 'package:clubhub/listasocios_page.dart';
-import 'package:clubhub/principal.dart';
-import 'package:clubhub/login.dart';
-import 'package:clubhub/Reservaciones.dart';
-import 'Reservaciones.dart';
-//import 'package:pruebais/routes.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  MyAppState createState() => MyAppState();
+final dummySnapshot = [
+ {"name": "Filip", "votes": 15},
+ {"name": "Abraham", "votes": 14},
+ {"name": "Richard", "votes": 11},
+ {"name": "Ike", "votes": 10},
+ {"name": "Justin", "votes": 1},
+];
+
+class MyApp extends StatelessWidget {
+ @override
+ Widget build(BuildContext context) {
+   return MaterialApp(
+     title: 'Baby Names',
+     home: MyHomePage(),
+   );
+ }
 }
 
-class MyAppState extends State<MyApp> {
-  int _currentIndex = 0;
-
-  Widget callPage(int currentIndex) {
-    switch (currentIndex) {
-      case 0:
-        return Principal();
-      case 1:
-        return Invitaciones();
-      case 2:
-        return Calendario();
-      case 3:
-        return Reservaciones();
-      // case 4:
-      //   return AdminPanel();
-
-        break;
-      default:
-        return Principal();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'scaffold Example',
-      routes: {
-        // // Cuando naveguemos hacia esta ruta , crearemos el Widget addsocio
-        // '/add-socio': (context) => AddSocio(),
-        // '/listasociospage': (context) => ListasPage(),
-      },
-      home: MainMenu(),
-      initialRoute: '/login',
-      onGenerateRoute: _getRoute,
-    );
-  }
-
-  Widget MainMenu() {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-        backgroundColor: kClubhubBlue400,
-      ),
-      body: callPage(_currentIndex),
-      drawer: invokeDrawer(),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: kClubhubBlue400,
-        currentIndex: _currentIndex,
-        onTap: (value) {
-          _currentIndex = value;
-          setState(() {});
-        },
-        items: [
-          BottomNavigationBarItem(
-              backgroundColor: Colors.blue,
-              icon: Icon(Icons.home), //ICONO DE HOME
-              title: Text('Principal')),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.blue,
-              icon: Icon(Icons.person_add),
-              title: Text('Invitaciones') // ICONO INVITACIONES
-              ),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.blue,
-              icon: Icon(Icons.calendar_today),
-              title: Text('Calendario') //ICONO CALENDARIO
-              ),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.blue,
-              icon: Icon(Icons.hotel),
-              title: Text('Reservaciones') //ICONO RESERVACIONES
-              )
-          // BottomNavigationBarItem(
-          //     backgroundColor: Colors.blue,
-          //     icon: Icon(Icons.insert_emoticon),
-          //     title: Text('Administrar') //ICONO RESERVACIONES
-          //     )
-        ],
-      ),
-    );
-  }
+class MyHomePage extends StatefulWidget {
+ @override
+ _MyHomePageState createState() {
+   return _MyHomePageState();
+ }
 }
 
-Route<dynamic> _getRoute(RouteSettings settings) {
-  if (settings.name != '/login') {
-    return null;
-  }
+class _MyHomePageState extends State<MyHomePage> {
+ @override
+ Widget build(BuildContext context) {
+   return Scaffold(
+     appBar: AppBar(title: Text('Baby Name Votes')),
+     body: _buildBody(context),
+   );
+ }
 
-  return MaterialPageRoute<void>(
-    settings: settings,
-    builder: (BuildContext context) => LoginPage(),
-    fullscreenDialog: true,
-  );
+ Widget _buildBody(BuildContext context) {
+   return StreamBuilder(
+     stream: Firestore.instance.collection('baby').snapshots(),
+     builder: (context, snapshot) {
+       if(!snapshot.hasData) return LinearProgressIndicator();
+
+       return _buildList(context, snapshot.data.documents);
+     },
+   );
+ }
+
+ Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+   return ListView(
+     padding: const EdgeInsets.only(top: 20.0),
+     children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+   );
+ }
+
+ Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+   final record = Record.fromSnapshot(data);
+
+   return Padding(
+     key: ValueKey(record.name),
+     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+     child: Container(
+       decoration: BoxDecoration(
+         border: Border.all(color: Colors.grey),
+         borderRadius: BorderRadius.circular(5.0),
+       ),
+       child: ListTile(
+         title: Text(record.name),
+         trailing: Text(record.votes.toString()),
+         onTap: () => print(record),
+       ),
+     ),
+   );
+ }
 }
 
-Widget invokeDrawer() {
-  return Drawer(
-    child: new ListView(
-      children: <Widget>[
-        UserAccountsDrawerHeader(
-          accountName: Text("Valeska De Ponte"),
-          accountEmail: Text("Valeskadeponte@prueba.es"),
-          currentAccountPicture: CircleAvatar(backgroundColor: Colors.white),
-          decoration: BoxDecoration(
-            color: Colors.lightBlue,
-          ),
-        ),
-        ListTile(
-          title: Text('precio de invitaciones'),
-          leading: Icon(Icons.info),
-        ),
-        ListTile(
-          title: Text('Historial de Pagos'),
-          leading: Icon(Icons.payment),
-        ),
-        ListTile(
-          title: Text('Historial de visitas'),
-          leading: Icon(Icons.visibility),
-        ),
-        ListTile(
-          title: Text('Historial de invitados'),
-          leading: Icon(Icons.person_pin),
-        ),
-        ListTile(
-          title: Text('Configuracion de cuenta'),
-          leading: Icon(Icons.new_releases),
-        ),
-        ListTile(
-          title: Text('soporte al cliente'),
-          leading: Icon(Icons.help),
-        ),
-        ListTile(
-          title: Text('cerrar sesion'),
-          leading: Icon(Icons.close),
-          onTap: () {},
-        ),
-      ],
-    ),
-  );
+class Record {
+ final String name;
+ final int votes;
+ final DocumentReference reference;
+
+ Record.fromMap(Map<String, dynamic> map, {this.reference})
+     : assert(map['name'] != null),
+       assert(map['votes'] != null),
+       name = map['name'],
+       votes = map['votes'];
+
+ Record.fromSnapshot(DocumentSnapshot snapshot)
+     : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+ @override
+ String toString() => "Record<$name:$votes>";
 }

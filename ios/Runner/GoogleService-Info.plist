@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>32465552131-0n3mh92k1b6smq1rbvnl8ivkfjp50dfs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.32465552131-0n3mh92k1b6smq1rbvnl8ivkfjp50dfs</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAYM4c9Y2jo2B4Z5kG1kGV4J3u3E7XNPDw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>32465552131</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.clubhub</string>
+	<key>PROJECT_ID</key>
+	<string>clubhub-vzla</string>
+	<key>STORAGE_BUCKET</key>
+	<string>clubhub-vzla.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:32465552131:ios:5403da0a47a7bb93519f36</string>
+	<key>DATABASE_URL</key>
+	<string>https://clubhub-vzla.firebaseio.com</string>
+</dict>
+</plist>
