@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>32465552131-0n3mh92k1b6smq1rbvnl8ivkfjp50dfs.apps.googleusercontent.com</string>
+	<string>296606963668-fvvvo26pdc4v08ik6o0n2ls2s409o4mm.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.32465552131-0n3mh92k1b6smq1rbvnl8ivkfjp50dfs</string>
+	<string>com.googleusercontent.apps.296606963668-fvvvo26pdc4v08ik6o0n2ls2s409o4mm</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>296606963668-0d48bfo50j65mu0ad9i27egqja7uuk02.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAYM4c9Y2jo2B4Z5kG1kGV4J3u3E7XNPDw</string>
+	<string>AIzaSyCTbxeydgm_w8TKEVGmGkL26zyLZEOQiwQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>32465552131</string>
+	<string>296606963668</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.clubhub</string>
+	<string>com.example.clubhub.vzla</string>
 	<key>PROJECT_ID</key>
-	<string>clubhub-vzla</string>
+	<string>clubhub-200af</string>
 	<key>STORAGE_BUCKET</key>
-	<string>clubhub-vzla.appspot.com</string>
+	<string>clubhub-200af.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:32465552131:ios:5403da0a47a7bb93519f36</string>
+	<string>1:296606963668:ios:bf07e9765fb058027e2841</string>
 	<key>DATABASE_URL</key>
-	<string>https://clubhub-vzla.firebaseio.com</string>
+	<string>https://clubhub-200af.firebaseio.com</string>
 </dict>
 </plist>

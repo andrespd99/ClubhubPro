@@ -1,6 +1,8 @@
 import 'package:clubhub/colors.dart';
 import 'package:flutter/material.dart';
 
+import 'News.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -69,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: new BorderRadius.circular(35.0),
                         ),
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => News()));
                         },
                       ),
                     ],
