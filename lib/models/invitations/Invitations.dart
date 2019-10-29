@@ -1,84 +1,113 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'addFriend.dart';
+import 'package:clubhub/addFriend.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'invitationCheckout.dart';
 
-// var invitedList = <String>[];
-// var friendsList = List<String>.generate(6, (i) => "Amigo $i");
+var invitedList = <Map>[];
 
-class Invitaciones extends StatefulWidget {
-  InvitacionesState createState() => InvitacionesState();
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
-    );
-  }
+class Invitations extends StatefulWidget {
+  final String friendsListId;
+
+  Invitations({this.friendsListId});
+
+  @override
+  _InvitationsState createState() => _InvitationsState();
 }
 
-class InvitacionesState extends State<Invitaciones> {
+class _InvitationsState extends State<Invitations> {
+
+  // bool[] _isVisible = [];
+
+  void _listTileChangeState(){}
+
+  // Future _getFriends() async {
+  //   var firestore = Firestore.instance;
+  //   DocumentSnapshot qn = await firestore
+  //       .collection('userFriends')
+  //       .document(widget.friendsListId).get();
+  //   return qn;
+  // }
+
+  // _fromInviteListToFriendsList(Map friends) {
+
+  // }
+
+
 
   @override
   Widget build(BuildContext context) {
+    var userFriendsList = Firestore.instance.collection('userFriends').document(widget.friendsListId).get();
+
+    _fromFrientsListToInviteList(Map friend) {
+      invitedList.add(friend);
+      // userFriendsList
+    }
+
     return Container(
         alignment: Alignment.center,
         color: Colors.white,
-        child: Padding (
+        child: Padding(
           padding: EdgeInsets.all(20.0),
           child: Column(
-          children: <Widget>[
-            Text(
-              "Invitados",
-              style: TextStyle(fontSize: 35.0),
-            ),
-            SizedBox(height: 20.0,),
-            Container(
-              width: 420.0,
-              height: 260.0,
-              // child: _invitedListView(),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                color: Colors.grey,
-                width: 2.0,
-              )),
-            ),
-            SizedBox(height: 40.0,),
-            Text(
-              "Amigos",
-              style: TextStyle(fontSize: 35.0),
-            ),
-            SizedBox(height: 20.0,),
-            Container(
-              width: 420.0,
-              height: 260.0,
-              // child: _friendsListView(),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                color: Colors.grey,
-                width: 2.0,
-              )),
-            ),
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: <Widget>[
-                RaisedButton(
-                  child: Text('Agregar', style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddFriend()));
-                  },
-                ),
-                RaisedButton(
-                  child: Text('Continuar', style: TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => InvitationCheckout()));
-                  },
-                )
-              ],
-            )
-          ],
-        ),
-        )
-    );
+            children: <Widget>[
+              Text(
+                "Invitados",
+                style: TextStyle(fontSize: ScreenUtil().setSp(80)),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(20)),
+              Container(
+                width: ScreenUtil().setWidth(420),
+                height: ScreenUtil().setHeight(260),
+                // child: _invitedListView(),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.grey,
+                  width: 2.0,
+                )),
+              ),
+              SizedBox(height: ScreenUtil().setHeight(40)),
+              Text(
+                "Amigos",
+                style: TextStyle(fontSize: ScreenUtil().setSp(80)),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Container(
+                width: ScreenUtil().setWidth(420),
+                height: ScreenUtil().setHeight(260),
+                // child: _friendsListView(),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                  color: Colors.grey,
+                  width: 2.0,
+                )),
+              ),
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  RaisedButton(
+                    child: Text('Agregar', style: TextStyle(fontSize: 20)),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => AddFriend()));
+                    },
+                  ),
+                  RaisedButton(
+                    child: Text('Continuar', style: TextStyle(fontSize: 20)),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InvitationCheckout()));
+                    },
+                  )
+                ],
+              )
+            ],
+          ),
+        ));
   }
 
 //   Widget _buildItem(String item, Animation animation) {
@@ -196,4 +225,4 @@ class InvitacionesState extends State<Invitaciones> {
 //     return 0;
 //   else
 //     return invitedList.length;
- }
+}

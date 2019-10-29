@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'main.dart';
-import 'invitaciones.dart';
 
 class AddFriend extends StatefulWidget {
   AddFriendState createState() => AddFriendState();

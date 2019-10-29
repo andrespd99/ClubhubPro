@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-
 import 'Calendario.dart';
+import 'package:clubhub/models/news/News.dart';
 import 'Reservaciones.dart';
-import 'colors.dart';
-import 'invitaciones.dart';
-import 'login.dart';
+import 'package:clubhub/assets/colors.dart';
 
-class News extends StatefulWidget {
+import 'models/invitations/invitationMain.dart';
+
+class Home extends StatefulWidget {
+  Home({Key key}) : super(key: key);
+
   @override
-  _NewsState createState() => _NewsState();
+  _HomeState createState() => _HomeState();
 }
 
-class _NewsState extends State<News> {
+class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   Widget callPage(int currentIndex) {
@@ -19,7 +21,7 @@ class _NewsState extends State<News> {
       case 0:
         return News();
       case 1:
-        return Invitaciones();
+        return InvitationMain();
       case 2:
         return Calendario();
       case 3:
@@ -32,18 +34,17 @@ class _NewsState extends State<News> {
         return News();
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: invokeDrawer(),
+       drawer: invokeDrawer(),
       appBar: AppBar(
         title: Text(''),
         backgroundColor: kClubhubBlue400,
       ),
       body: callPage(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: kClubhubBlue400,
+        fixedColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: (value) {
           _currentIndex = value;
