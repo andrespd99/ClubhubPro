@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: LoginPage(),
       theme: ThemeData(
+        fontFamily: 'Poppins-Medium',
         primaryColor: kClubhubBlueMain,
         primaryColorDark: kClubhubBlueDark,
         primaryColorLight: kClubhubBlueLight,

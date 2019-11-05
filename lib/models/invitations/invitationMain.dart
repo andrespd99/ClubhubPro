@@ -26,24 +26,23 @@ class _InvitationMainState extends State<InvitationMain> {
         Expanded(
           child: InkWell(
             child: Stack(
-              fit: StackFit.expand,
               children: <Widget>[
                 FittedBox(
                   child: Image.asset(
                     "lib/assets/images/register_invite_image.jpg",
                     height: ScreenUtil.getInstance().setHeight(500),
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 2.1,
-                    sigmaY: 2.1,
-                  ),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.0),
-                  ),
-                ),
+                // BackdropFilter(
+                //   filter: ImageFilter.blur(
+                //     sigmaX: 2.1,
+                //     sigmaY: 2.1,
+                //   ),
+                //   child: Container(
+                //     color: Colors.black.withOpacity(0.0),
+                //   ),
+                // ),
                 Positioned(
                   bottom: 15.0,
                   right: 10.0,

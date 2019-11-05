@@ -4,6 +4,7 @@ import 'package:clubhub/models/news/ArticleDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 Icon _bookmarkIconState = new Icon(Icons.bookmark_border);
 
@@ -106,9 +107,13 @@ Widget _buildListItem(BuildContext context, DocumentSnapshot article) {
               width: MediaQuery.of(context).size.width,
               height: 300,
               child: FittedBox(
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'lib/assets/images/loading.gif',
-                  image: article.data['thumbnailUrl'],
+                child: CachedNetworkImage(
+                  imageUrl: article.data['thumbnailUrl'], 
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  //                 FadeInImage.assetNetwork(
+                  //   placeholder: 'lib/assets/images/loading.gif',
+                  //   image: article.data['thumbnailUrl'],
+                  // ),
                 ),
                 fit: BoxFit.fitWidth,
               ),

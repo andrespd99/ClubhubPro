@@ -1,3 +1,5 @@
+import 'package:clubhub/hab_page.dart';
+import 'package:clubhub/login.dart';
 import 'package:flutter/material.dart';
 import 'Calendario.dart';
 import 'package:clubhub/models/news/News.dart';
@@ -23,9 +25,9 @@ class _HomeState extends State<Home> {
       case 1:
         return InvitationMain();
       case 2:
-        return Calendario();
-      case 3:
-        return Reservaciones();
+        return ListasHabPage();
+      // case 3:
+      //   return Reservaciones();
         // case 4:
         //   return AdminPanel();
 
@@ -44,7 +46,7 @@ class _HomeState extends State<Home> {
       ),
       body: callPage(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
-        fixedColor: Colors.white,
+        fixedColor: kClubhubBlueMain,
         currentIndex: _currentIndex,
         onTap: (value) {
           _currentIndex = value;
@@ -60,11 +62,11 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.person_add),
               title: Text('Invitaciones') // ICONO INVITACIONES
               ),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.blue,
-              icon: Icon(Icons.calendar_today),
-              title: Text('Calendario') //ICONO CALENDARIO
-              ),
+          // BottomNavigationBarItem(
+          //     backgroundColor: Colors.blue,
+          //     icon: Icon(Icons.calendar_today),
+          //     title: Text('Calendario') //ICONO CALENDARIO
+          //     ),
           BottomNavigationBarItem(
               backgroundColor: Colors.blue,
               icon: Icon(Icons.hotel),
@@ -92,34 +94,36 @@ class _HomeState extends State<Home> {
               color: Colors.lightBlue,
             ),
           ),
-          ListTile(
-            title: Text('precio de invitaciones'),
-            leading: Icon(Icons.info),
-          ),
-          ListTile(
-            title: Text('Historial de Pagos'),
-            leading: Icon(Icons.payment),
-          ),
-          ListTile(
-            title: Text('Historial de visitas'),
-            leading: Icon(Icons.visibility),
-          ),
-          ListTile(
-            title: Text('Historial de invitados'),
-            leading: Icon(Icons.person_pin),
-          ),
-          ListTile(
-            title: Text('Configuracion de cuenta'),
-            leading: Icon(Icons.new_releases),
-          ),
-          ListTile(
-            title: Text('soporte al cliente'),
-            leading: Icon(Icons.help),
-          ),
+          // ListTile(
+          //   title: Text('precio de invitaciones'),
+          //   leading: Icon(Icons.info),
+          // ),
+          // ListTile(
+          //   title: Text('Historial de Pagos'),
+          //   leading: Icon(Icons.payment),
+          // ),
+          // ListTile(
+          //   title: Text('Historial de visitas'),
+          //   leading: Icon(Icons.visibility),
+          // ),
+          // ListTile(
+          //   title: Text('Historial de invitados'),
+          //   leading: Icon(Icons.person_pin),
+          // ),
+          // ListTile(
+          //   title: Text('Configuracion de cuenta'),
+          //   leading: Icon(Icons.new_releases),
+          // ),
+          // ListTile(
+          //   title: Text('soporte al cliente'),
+          //   leading: Icon(Icons.help),
+          // ),
           ListTile(
             title: Text('cerrar sesion'),
             leading: Icon(Icons.close),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+            },
           ),
         ],
       ),

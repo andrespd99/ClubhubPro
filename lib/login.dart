@@ -174,10 +174,12 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Home()));
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Home()),
+                                  (Route<dynamic> route) => false,
+                                );
                               },
                               child: Center(
                                 child: Text("Iniciar Sesion",
