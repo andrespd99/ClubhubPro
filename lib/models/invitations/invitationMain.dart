@@ -27,7 +27,8 @@ class _InvitationMainState extends State<InvitationMain> {
           child: InkWell(
             child: Stack(
               children: <Widget>[
-                FittedBox(
+                Container(
+                  height: double.infinity,
                   child: Image.asset(
                     "lib/assets/images/register_invite_image.jpg",
                     height: ScreenUtil.getInstance().setHeight(500),

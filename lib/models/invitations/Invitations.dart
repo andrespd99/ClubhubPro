@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:clubhub/addFriend.dart';
+// import 'package:clubhub/addFriend.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'invitationCheckout.dart';
 
@@ -90,8 +90,8 @@ class _InvitationsState extends State<Invitations> {
                   RaisedButton(
                     child: Text('Agregar', style: TextStyle(fontSize: 20)),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => AddFriend()));
+                      // Navigator.push(context,
+                          // MaterialPageRoute(builder: (context) => AddFriend()));
                     },
                   ),
                   RaisedButton(

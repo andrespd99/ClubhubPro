@@ -33,7 +33,7 @@ class _NewsState extends State<News> {
   }
 
   @override
-  Widget build(BuildContext context) {    
+  Widget build(BuildContext context) {
     _navigateToDetail(DocumentSnapshot article) {
       Navigator.push(
           context,
