@@ -1,10 +1,7 @@
 import 'package:clubhub/hab_page.dart';
 import 'package:clubhub/login.dart';
-import 'package:clubhub/models/invitations/InvitationsNew.dart';
 import 'package:flutter/material.dart';
-import 'Calendario.dart';
 import 'package:clubhub/models/news/News.dart';
-import 'Reservaciones.dart';
 import 'package:clubhub/assets/colors.dart';
 
 import 'models/invitations/invitationMain.dart';
@@ -24,7 +21,7 @@ class _HomeState extends State<Home> {
       case 0:
         return News();
       case 1:
-        return Invitations();
+        return InvitationMain();
       case 2:
         return ListasHabPage();
       // case 3:
@@ -41,10 +38,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
        drawer: invokeDrawer(),
-      // appBar: AppBar(
-      //   title: Text(''),
-      //   backgroundColor: kClubhubBlue400,
-      // ),
+      appBar: AppBar(
+        title: Text(''),
+        backgroundColor: kClubhubBlue400,
+      ),
       body: callPage(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: kClubhubBlueMain,

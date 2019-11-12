@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:clubhub/models/invitations/InvitationHistory.dart';
 import 'package:clubhub/models/invitations/Invitations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,58 +21,88 @@ class _InvitationMainState extends State<InvitationMain> {
     double height = MediaQuery.of(context).size.height;
     // height without SafeArea
 
+    Widget backgroundImage(int i) {
+      switch (i) {
+        case 1:
+          {
+            return new Container(
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.6), BlendMode.luminosity),
+                  image: AssetImage("lib/assets/images/invitations.jpeg"),
+                  fit: BoxFit.cover)),
+            );
+          }
+        case 2:
+          {
+            return new Container(
+              decoration: new BoxDecoration(
+                image: new DecorationImage(
+                  colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.6), BlendMode.luminosity),
+                  image: AssetImage(
+                    "lib/assets/images/invitation_history.jpg"),
+                  fit: BoxFit.cover)),
+            );
+          }
+          break;
+        default:
+      }
+    }
+
+    Widget onTopContent(int i) {
+      switch (i) {
+        case 1:
+          {
+            return new Positioned(
+              right: 10.0,
+              bottom: 20.0,
+              child: Text(
+                'Invitar amigos',
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40),
+                  fontWeight: FontWeight.bold),
+              ),
+            );
+          }
+        case 2:
+          {
+            return new Positioned(
+              right: 10.0,
+              bottom: 20.0,
+              child: Text(
+                'Ver historial \n de invitados',
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40),
+                  fontWeight: FontWeight.bold),
+              ),
+            );
+          }
+
+          break;
+        default:
+      }
+    }
+
     return Column(
       children: <Widget>[
         //Contenedor registrar invitados
         Expanded(
-          child: InkWell(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  height: double.infinity,
-                  child: Image.asset(
-                    "lib/assets/images/register_invite_image.jpg",
-                    height: ScreenUtil.getInstance().setHeight(500),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // BackdropFilter(
-                //   filter: ImageFilter.blur(
-                //     sigmaX: 2.1,
-                //     sigmaY: 2.1,
-                //   ),
-                //   child: Container(
-                //     color: Colors.black.withOpacity(0.0),
-                //   ),
-                // ),
-                Positioned(
-                  bottom: 15.0,
-                  right: 10.0,
-                  child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Text(
-                        'Registrar invitados',
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontSize: 33.0,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(4.0, 5.0),
-                                blurRadius: 25.0,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
-                            ]),
-                      )),
-                )
-              ],
-            ),
-            onTap: () {
-              Navigator.push(context,
+          child: Container(
+            width: double.infinity,
+            child: InkWell(
+              child: Stack(
+                children: <Widget>[
+                  backgroundImage(1),
+                  onTopContent(1),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(context,
                   MaterialPageRoute(builder: (context) => Invitations()));
-            },
+              },
+            ),
           ),
         ),
         //Contenedor Historial de invitados
@@ -79,12 +110,8 @@ class _InvitationMainState extends State<InvitationMain> {
           child: InkWell(
             child: Stack(
               children: <Widget>[
-                FittedBox(
-                  child: Image.asset(
-                    "lib/assets/images/invitation_history.jpg",
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
+                backgroundImage(2),
+                onTopContent(2),
                 // BackdropFilter(
                 //   filter: ImageFilter.blur(
                 //     sigmaX: 2.1,
@@ -94,33 +121,11 @@ class _InvitationMainState extends State<InvitationMain> {
                 //     color: Colors.black.withOpacity(0.0),
                 //   ),
                 // ),
-                Positioned(
-                  bottom: 15.0,
-                  right: 10.0,
-                  child: Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Text(
-                        'Historial de \n invitados',
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontSize: 33.0,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(4.0, 5.0),
-                                blurRadius: 25.0,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
-                            ]),
-                      )),
-                )
               ],
             ),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Invitations()));
+                  MaterialPageRoute(builder: (context) => InvitationHistory()));
             },
           ),
         ),

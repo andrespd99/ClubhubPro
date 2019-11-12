@@ -8,20 +8,26 @@ void main() => runApp(new MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final newTextTheme = Theme.of(context).textTheme.apply(
+    precacheImage(AssetImage('lib/assets/images/invitations.jpeg'), context);
+    precacheImage(
+        AssetImage('lib/assets/images/invitation_history.jpg'), context);
+    precacheImage(AssetImage('lib/assets/images/loading.gif'), context);
+    final clubhubTextTheme = Theme.of(context).textTheme.apply(
           bodyColor: kClubhubTextPrimary,
           displayColor: kClubhubTextPrimary,
         );
 
-    final appBarTextTheme = Theme.of(context).textTheme.apply(
-          displayColor: Colors.white,
-          bodyColor: Colors.white
-        );
+    final appBarTextTheme = Theme.of(context)
+        .textTheme
+        .apply(displayColor: Colors.white, bodyColor: Colors.white);
 
-
+    final clubhubButtonTheme = Theme.of(context).buttonTheme.copyWith(
+        disabledColor: kClubhubTextPrimary,
+        buttonColor: kClubhubBlueMain,
+        textTheme: ButtonTextTheme.primary);
 
     return MaterialApp(
-      home: LoginPage(),
+      initialRoute: '/',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           textTheme: appBarTextTheme,
@@ -32,12 +38,13 @@ class MyApp extends StatelessWidget {
         primaryColor: kClubhubBlueMain,
         primaryColorDark: kClubhubBlueDark,
         primaryColorLight: kClubhubBlueLight,
-        textTheme: newTextTheme,
-        buttonTheme: ButtonThemeData(
-          buttonColor: kClubhubBlueMain,
-          textTheme: ButtonTextTheme.normal
-        ),
+        textTheme: clubhubTextTheme,
+        buttonTheme: clubhubButtonTheme,
       ),
+      routes: {
+        '/': (context) => LoginPage(),
+        '/home': (context) => Home(),
+      },
     );
   }
 }

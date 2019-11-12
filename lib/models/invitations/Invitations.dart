@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:clubhub/UtilWidgets.dart';
+import 'package:clubhub/assets/colors.dart';
+import 'package:clubhub/models/invitations/FriendInvited.dart';
+import 'package:clubhub/models/invitations/addFriend.dart';
+import 'package:clubhub/models/invitations/invitationCheckout.dart';
 import 'package:flutter/material.dart';
-// import 'package:clubhub/addFriend.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'invitationCheckout.dart';
-
-var invitedList = <Map>[];
 
 class Invitations extends StatefulWidget {
   final String friendsListId;
@@ -16,213 +17,293 @@ class Invitations extends StatefulWidget {
 }
 
 class _InvitationsState extends State<Invitations> {
+  bool _isVisible = false;
 
-  // bool[] _isVisible = [];
+  List<FriendInvited> listOfInvited = new List<FriendInvited>();
 
-  void _listTileChangeState(){}
+  void _toggleVisibility() {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
+  }
 
-  // Future _getFriends() async {
-  //   var firestore = Firestore.instance;
-  //   DocumentSnapshot qn = await firestore
-  //       .collection('userFriends')
-  //       .document(widget.friendsListId).get();
-  //   return qn;
-  // }
+  Future _getFriends() async {
+    var firestore = Firestore.instance;
 
-  // _fromInviteListToFriendsList(Map friends) {
+    QuerySnapshot qn = await firestore.collection('userFriends').getDocuments();
 
-  // }
+    return qn.documents;
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    _isVisible = false;
+    listOfInvited.clear();
+  }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var userFriendsList = Firestore.instance.collection('userFriends').document(widget.friendsListId).get();
 
-    _fromFrientsListToInviteList(Map friend) {
-      invitedList.add(friend);
-      // userFriendsList
-    }
-
-    return Container(
-        alignment: Alignment.center,
-        color: Colors.white,
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Invitar"),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
           child: Column(
             children: <Widget>[
-              Text(
-                "Invitados",
-                style: TextStyle(fontSize: ScreenUtil().setSp(80)),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 0.0),
+                child: Column(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        showFriendsList(),
+                        showAddToFriendsListButton(),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        showEditButton(),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: ScreenUtil().setHeight(20)),
-              Container(
-                width: ScreenUtil().setWidth(420),
-                height: ScreenUtil().setHeight(260),
-                // child: _invitedListView(),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  color: Colors.grey,
-                  width: 2.0,
-                )),
-              ),
-              SizedBox(height: ScreenUtil().setHeight(40)),
-              Text(
-                "Amigos",
-                style: TextStyle(fontSize: ScreenUtil().setSp(80)),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                width: ScreenUtil().setWidth(420),
-                height: ScreenUtil().setHeight(260),
-                // child: _friendsListView(),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  color: Colors.grey,
-                  width: 2.0,
-                )),
-              ),
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text('Agregar', style: TextStyle(fontSize: 20)),
-                    onPressed: () {
-                      // Navigator.push(context,
-                          // MaterialPageRoute(builder: (context) => AddFriend()));
-                    },
-                  ),
-                  RaisedButton(
-                    child: Text('Continuar', style: TextStyle(fontSize: 20)),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InvitationCheckout()));
-                    },
-                  )
-                ],
-              )
+              Padding(
+                  padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 15.0),
+                  child: Column(
+                    children: <Widget>[
+                      showInvitedList(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0.0, 8.0, 10.0, 0.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            RaisedButton(
+                              child: Text('Continuar'),
+                              textColor: Colors.white,
+                              onPressed: () {
+                                Navigator.push(context, 
+                                MaterialPageRoute(builder: (context) => InvitationCheckout(invitedFriends: this.listOfInvited)));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget showFriendsList() {
+    return Container(
+      height: ScreenUtil.getInstance().setHeight(470),
+      decoration: BoxDecoration(
+          border: Border.all(
+        color: Colors.black12,
+        width: 1.5,
+      )),
+      child: StreamBuilder(
+          stream: Firestore.instance.collection('userFriends').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            var documents = snapshot.data.documents;
+            if (!snapshot.hasData) {
+              return showLoadingCircle();
+            } else {
+              return Scrollbar(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => Divider(
+                    color: kClubhubTextPrimary,
+                    indent: 15.0,
+                    endIndent: 15.0,
+                  ),
+                  itemCount: documents.length,
+                  itemBuilder: (_, index) {
+                    return ListTile(
+                      title: _buildFriendTile(
+                          context, snapshot.data.documents[index], index),
+                    );
+                  },
+                ),
+              );
+            }
+          }),
+    );
+  }
+
+  Widget _buildFriendTile(
+      BuildContext context, DocumentSnapshot friend, int index) {
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 28.0,
+          height: 28.0,
+          child: Visibility(
+            visible: _isVisible,
+            replacement: showAddToInviteListButton(friend, index),
+            child: showRemoveFromFriendsListButton(friend, index),
+          ),
+        ),
+        SizedBox(width: ScreenUtil.getInstance().setWidth(10)),
+        Text(
+          friend.data['name'],
+          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+        ),
+        SizedBox(width: ScreenUtil.getInstance().setWidth(30)),
+        Text(
+          friend.data['cid'],
+          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+        ),
+      ],
+    );
+  }
+
+  Widget showInvitedList() {
+    return Container(
+        height: ScreenUtil.getInstance().setHeight(400),
+        decoration: BoxDecoration(
+            border: Border.all(
+          color: Colors.black12,
+          width: 1.5,
+        )),
+        child: Scrollbar(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => Divider(
+              color: kClubhubTextPrimary,
+              indent: 15.0,
+              endIndent: 15.0,
+            ),
+            itemCount: listOfInvited.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: _buildInvitedTile(
+                    context, listOfInvited.elementAt(index), index),
+              );
+            },
           ),
         ));
   }
 
-//   Widget _buildItem(String item, Animation animation) {
-//     return SizeTransition(
-//       sizeFactor: animation,
-//       child: Card(
-//         child: ListTile(
-//           title: Text(
-//             item,
-//             style: TextStyle(fontSize: 20),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
+  Widget _buildInvitedTile(
+      BuildContext context, FriendInvited friend, int index) {
+    return Row(
+      children: <Widget>[
+        Container(
+          width: 28.0,
+          height: 28.0,
+          child: showRemoveFromInviteListButton(friend.cid, index),
+        ),
+        SizedBox(width: ScreenUtil.getInstance().setWidth(10)),
+        Text(
+          friend.name,
+          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+        ),
+        SizedBox(width: ScreenUtil.getInstance().setWidth(30)),
+        Text(
+          friend.cid,
+          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+        ),
+      ],
+    );
+  }
 
-//   void _insertSingleItem() {
-//     String newItem = "Planet";
-//     // Arbitrary location for demonstration purposes
-//     int insertIndex = 2;
-//     // Add the item to the data list.
-//     //_data.insert(insertIndex, newItem);
-//     // Add the item visually to the AnimatedList.
-//     //_listKey.currentState.insertItem(insertIndex);
-//   }
+  removeFriendFromList(DocumentSnapshot friend) {
+    Firestore.instance
+        .collection('userFriends')
+        .document(friend.documentID)
+        .delete();
+  }
 
-//   void _removeSingleItem() {
-//     int removeIndex = 2;
-//     // Remove item from data list but keep copy to give to the animation.
-//     //String removedItem = _data.removeAt(removeIndex);
-//     // This builder is just for showing the row while it is still
-//     // animating away. The item is already gone from the data list.
-//     AnimatedListRemovedItemBuilder builder = (context, animation) {
-//       //return _buildItem(removedItem, animation);
-//     };
-//     // Remove the item visually from the AnimatedList.
-//     //_listKey.currentState.removeItem(removeIndex, builder);
-//   }
+  Widget showAddToFriendsListButton() {
+    return Positioned(
+      bottom: 20.0,
+      right: 20.0,
+      child: Visibility(
+        visible: !_isVisible,
+        child: Container(
+          width: 45.0,
+          height: 45.0,
+          child: FloatingActionButton(
+            backgroundColor: kClubhubBlueMain,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddFriend()));
+            },
+            child: Icon(Icons.add),
+          ),
+        ),
+      ),
+    );
+  }
 
-//   Widget _invitedListView() {
-//     return ListView.separated(
-//       itemCount: _invitedListSize(),
-//       itemBuilder: (context, index) {
-//         var item = invitedList[index];
+  Widget showAddToInviteListButton(DocumentSnapshot friend, int index) {
+    return FloatingActionButton(
+      heroTag: "addFriendBtn$index",
+      backgroundColor: Colors.green,
+      onPressed: () {
+        addFriendToInviteList(friend);
+      },
+      child: Icon(Icons.add),
+    );
+  }
 
-//         return Dismissible(
-//           key: Key(item),
-//           onDismissed: (direction) {
-//             setState(() {
-//               friendsList.add(item);
-//               invitedList.removeAt(index);
-//             });
+  Widget showRemoveFromFriendsListButton(DocumentSnapshot friend, int index) {
+    return FloatingActionButton(
+      heroTag: "removeFriendBtn$index",
+      backgroundColor: Colors.redAccent,
+      onPressed: () => {removeFriendFromList(friend)},
+      child: Icon(Icons.remove),
+    );
+  }
 
-//             Scaffold.of(context)
-//                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
-//           },
-//           background: Container(color: Colors.red),
-//           child: ListTile(title: Text("$item")),
-//         );
-//       },
-//       separatorBuilder: (context, index) {
-//         return Divider();
-//       },
-//     );
-//   }
+  Widget showRemoveFromInviteListButton(String cid, int index) {
+    return FloatingActionButton(
+      heroTag: "removeInvitedBtn$index",
+      backgroundColor: Colors.redAccent,
+      onPressed: () => {removeInvitedFromList(cid)},
+      child: Icon(Icons.remove),
+    );
+  }
 
-//   Widget _friendsListView() {
-//     return ListView.separated(
-//       itemCount: _friendsListSize(),
-//       itemBuilder: (context, index) {
-//         var item = friendsList[index];
+  void addFriendToInviteList(DocumentSnapshot friend) {
+    FriendInvited newInvited =
+        new FriendInvited(friend.data['name'], friend.data['cid']);
+    setState(() {
+      listOfInvited.add(newInvited);
+    });
+  }
 
-//         return Dismissible(
-//           key: Key(item),
-//           onDismissed: (direction) {
-//             setState(() {
-//               invitedList.add(item);
-//               friendsList.removeAt(index);
-//             });
+  removeInvitedFromList(String cid) {
+    setState(() {
+      for (var i = 0; i < listOfInvited.length; i++) {
+        if (listOfInvited.elementAt(i).cid == cid) {
+          setState(() {
+            listOfInvited.removeAt(i);
+          });
+        }
+      }
+    });
+  }
 
-//             Scaffold.of(context)
-//                 .showSnackBar(SnackBar(content: Text("$item dismissed")));
-//           },
-//           background: Container(color: Colors.green),
-//           child: ListTile(title: Text("$item")),
-//         );
-//       },
-//       separatorBuilder: (context, index) {
-//         return Divider();
-//       },
-//     );
-//   }
-
-//   int _friendsListSize() {
-//     if (friendsList.isEmpty)
-//       return 0;
-//     else
-//       return friendsList.length;
-//   }
-
-//   int _invitedListSize() {
-//     if (invitedList.isEmpty)
-//       return 0;
-//     else
-//       return invitedList.length;
-//   }
-// }
-
-// void addFriendToList() {
-//   friendsList.add("Nuevo amigo");
-// }
-
-// int invitedListSize() {
-//   if (invitedList.isEmpty)
-//     return 0;
-//   else
-//     return invitedList.length;
+  Widget showEditButton() {
+    return FlatButton(
+      child: Text('Editar'),
+      textColor: kClubhubBlueDark,
+      onPressed: () {
+        _toggleVisibility();
+      },
+    );
+  }
 }
