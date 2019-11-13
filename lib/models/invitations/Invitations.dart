@@ -27,14 +27,6 @@ class _InvitationsState extends State<Invitations> {
     });
   }
 
-  Future _getFriends() async {
-    var firestore = Firestore.instance;
-
-    QuerySnapshot qn = await firestore.collection('userFriends').getDocuments();
-
-    return qn.documents;
-  }
-
   @override
   void initState() {
     super.initState();

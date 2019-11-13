@@ -25,10 +25,16 @@ class _NewsState extends State<News> {
     return qn.documents;
   }
 
+  void _bookmarkIconStateChanger(bool isBookmarked, DocumentSnapshot article) {
+    setState(() {
+      article.data['isBookmarked'] = !isBookmarked;
+    });
+    print(article.data['isBookmarked']);
+  }
+
   @override
   void initState() {
     super.initState();
-
     _data = _getPosts();
   }
 
@@ -62,85 +68,87 @@ class _NewsState extends State<News> {
           }),
     );
   }
-}
 
-Widget _buildListItem(BuildContext context, DocumentSnapshot article) {
-  _bookmarkIconStateChanger() {
-    _bookmarkIconState = new Icon(Icons.bookmark);
+  Widget _buildListItem(BuildContext context, DocumentSnapshot article) {
+    return Column(
+      children: <Widget>[
+        showArticleTitle(article),
+        showArticleImage(article, context),
+        SizedBox(
+          height: ScreenUtil().setHeight(50),
+        ),
+        Divider()
+      ],
+    );
   }
 
-  return Column(
-    children: <Widget>[
-      showArticleTitle(article),
-      showArticleImage(article, context),
-      SizedBox(
-        height: ScreenUtil().setHeight(50),
-      ),
-      Divider()
-    ],
-  );
-}
-
-Widget showArticleImage(DocumentSnapshot article, BuildContext context) {
-  return Stack(
-    children: <Widget>[
-      Hero(
-        tag: article.documentID,
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xfff2f2f2),
-          ),
-          width: MediaQuery.of(context).size.width,
-          height: 300,
-          child: FittedBox(
-            child: CachedNetworkImage(
-              imageUrl: article.data['thumbnailUrl'],
-              placeholder: (context, url) => CircularProgressIndicator(),
-              //                 FadeInImage.assetNetwork(
-              //   placeholder: 'lib/assets/images/loading.gif',
-              //   image: article.data['thumbnailUrl'],
-              // ),
+  Widget showArticleImage(DocumentSnapshot article, BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Hero(
+          tag: article.documentID,
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xfff2f2f2),
             ),
-            fit: BoxFit.fitWidth,
+            width: MediaQuery.of(context).size.width,
+            height: 300,
+            child: FittedBox(
+              child: CachedNetworkImage(
+                imageUrl: article.data['thumbnailUrl'],
+                placeholder: (context, url) => CircularProgressIndicator(),
+                //                 FadeInImage.assetNetwork(
+                //   placeholder: 'lib/assets/images/loading.gif',
+                //   image: article.data['thumbnailUrl'],
+                // ),
+              ),
+              fit: BoxFit.fitWidth,
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 20.0,
+          right: 15.0,
+          child: showBookmarker(article),
+        )
+      ],
+    );
+  }
+
+  Widget showBookmarker(DocumentSnapshot article) {
+    return ClipOval(
+      child: Container(
+        width: 44.0,
+        height: 44.0,
+        color: Colors.white,
+        child: InkWell(
+          child: Visibility(
+            visible: article.data['isBookmarked'],
+            replacement: Icon(Icons.bookmark_border),
+            child: Icon(Icons.bookmark),
+          ),
+          onTap: () {
+            _bookmarkIconStateChanger(article.data['isBookmarked'], article);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget showArticleTitle(DocumentSnapshot article) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(7.0, 0, 0, 5.0),
+      child: Hero(
+        tag: article.data['title'],
+        child: Text(
+          article.data['title'],
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            //fontSize: ScreenUtil().setSp(40),
+            color: kClubhubBlueDark,
           ),
         ),
       ),
-      // Positioned(
-      //   bottom: 20.0,
-      //   right: 15.0,
-      //   child: ClipOval(
-      //     child: Container(
-      //       // width: ScreenUtil().setWidth(90),
-      //       // height: ScreenUtil().setHeight(90),
-      //       width: 44.0,
-      //       height: 44.0,
-      //       color: Colors.white,
-      //       child: InkWell(
-      //         child: _bookmarkIconState,
-      //         onTap: () {
-      //           //_bookmarkIconStateChanger();
-      //         },
-      //       ),
-      //     ),
-      //   ),
-      // )
-    ],
-  );
-}
-
-Widget showArticleTitle(DocumentSnapshot article) {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(7.0, 0, 0, 5.0),
-    child: Hero(
-      tag: article.data['title'],
-      child: Text(
-        article.data['title'],
-        textAlign: TextAlign.left,
-        style: TextStyle(
-          //fontSize: ScreenUtil().setSp(40),
-          color: kClubhubBlueDark,
-        ),
-      ),
-    ),
-  );
+    );
+  }
 }
