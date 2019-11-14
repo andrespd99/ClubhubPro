@@ -5,6 +5,7 @@ const kClubhubBlue100 = const Color(0xFF82f7ff);
 // const kClubhubBlue300 = const Color(0xFF4FC3F7);
 const kClubhubBlue400 = const Color(0xFF40c4ff);
 const kClubhubBlue900 = const Color(0xFF0094cc);
+const kClubhubIconsOrange = const Color(0xFFff8040);
 
 const kClubhubBlueMain = kClubhubBlue400;
 const kClubhubBlueLight = kClubhubBlue100;

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:clubhub/assets/colors.dart';
 import 'package:clubhub/historial_Reservaciones.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -81,7 +82,9 @@ class ListasHabPage extends StatelessWidget {
                                 .elementAt(3)
                                 .toString(),
                             softWrap: true,
-                            style: bold24Roboto),
+                            style: TextStyle(
+                                fontSize: ScreenUtil.getInstance().setSp(17),
+                                color: kClubhubBlueDark)),
                         new Container(
                             child: CarouselSlider(
                           height: 300.0,
@@ -155,11 +158,15 @@ class ListasHabPage extends StatelessWidget {
 
                                   // Esto mostrara 'Me encanta' por la terminal
                                   onPressed: () {},
-                                  label: Text(snapshot
-                                          .data.documents[index].data.values
-                                          .elementAt(2)
-                                          .toString() +
-                                      ' día'),
+                                  label: Text(
+                                      snapshot.data.documents[index].data.values
+                                              .elementAt(2)
+                                              .toString() +
+                                          ' día',
+                                      style: TextStyle(
+                                          fontSize: ScreenUtil.getInstance()
+                                              .setSp(12),
+                                          color: kClubhubBlueDark)),
                                 )
                               ],
                             ))
@@ -186,15 +193,18 @@ class DetailScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0),
           child: new Column(children: <Widget>[
             // Agregamos una imagen consumida desde internet
             Text(
-                snapshot.data.documents[index].data.values
-                    .elementAt(3)
-                    .toString(),
-                softWrap: true,
-                style: bold24Roboto),
+              snapshot.data.documents[index].data.values
+                  .elementAt(3)
+                  .toString(),
+              softWrap: true,
+              style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(17),
+                  color: kClubhubBlueDark),
+            ),
             new Container(
                 child: CarouselSlider(
               height: 300.0,
@@ -236,7 +246,8 @@ class DetailScreen extends StatelessWidget {
             // Agregamos un contenedor para el texto
 
             new Container(
-              padding: const EdgeInsets.all(10.0), // Un padding para todo
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0, vertical: 0.0), // Un padding para todo
               child: Text(
                 snapshot.data.documents[index].data.values
                     .elementAt(0)
@@ -247,8 +258,8 @@ class DetailScreen extends StatelessWidget {
 
             new Padding(
                 // Esta seccion sera para los botones de acciones
-                padding: new EdgeInsets.all(
-                    7.0), // Un padding general entre cada elemento
+                padding: new EdgeInsets.symmetric(
+                    horizontal: 25.0), // Un padding general entre cada elemento
                 child: new Row(
                   // mainAxisAlignment permite alinear el contenido dentro de Row
                   // en este caso le digo que use spaceBetwee, esto hara que
@@ -264,10 +275,13 @@ class DetailScreen extends StatelessWidget {
 
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
-                      label: Text(snapshot.data.documents[index].data.values
-                              .elementAt(2)
-                              .toString() +
-                          ' día'),
+                      label: Text(
+                        snapshot.data.documents[index].data.values
+                                .elementAt(2)
+                                .toString() +
+                            ' día',
+                        style: TextStyle(color: kClubhubBlueDark),
+                      ),
                     ),
                     new FlatButton.icon(
                       // Un icono puede recibir muchos atributos, aqui solo usaremos icono, tamaño y color
@@ -276,10 +290,13 @@ class DetailScreen extends StatelessWidget {
 
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
-                      label: Text(snapshot.data.documents[index].data.values
-                              .elementAt(1)
-                              .toString() +
-                          ' area'),
+                      label: Text(
+                        snapshot.data.documents[index].data.values
+                                .elementAt(1)
+                                .toString() +
+                            ' area',
+                        style: TextStyle(color: kClubhubBlueDark),
+                      ),
                     ),
                     new FlatButton.icon(
                       // Un icono puede recibir muchos atributos, aqui solo usaremos icono, tamaño y color
@@ -288,15 +305,18 @@ class DetailScreen extends StatelessWidget {
 
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
-                      label: Text('2' + ' camas'),
+                      label: Text(
+                        '2' + ' camas',
+                        style: TextStyle(color: kClubhubBlueDark),
+                      ),
                     )
                   ],
                 )),
 
             new Padding(
                 // Esta seccion sera para los botones de acciones
-                padding: new EdgeInsets.all(
-                    7.0), // Un padding general entre cada elemento
+                padding: new EdgeInsets.symmetric(
+                    horizontal: 25.0), // Un padding general entre cada elemento
                 child: new Row(
                   // mainAxisAlignment permite alinear el contenido dentro de Row
                   // en este caso le digo que use spaceBetwee, esto hara que
@@ -315,7 +335,9 @@ class DetailScreen extends StatelessWidget {
                         onPressed: () {},
                         label: Text(
                           'Acceso a Internet',
-                          style: TextStyle(fontSize: ScreenUtil().setSp(20)),
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(10),
+                              color: kClubhubBlueDark),
                         )),
                     new FlatButton.icon(
                       // Un icono puede recibir muchos atributos, aqui solo usaremos icono, tamaño y color
@@ -326,15 +348,17 @@ class DetailScreen extends StatelessWidget {
                       onPressed: () {},
                       label: Text(
                         'Seguridad las 24 horas',
-                        style: TextStyle(fontSize: ScreenUtil().setSp(20)),
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(10),
+                            color: kClubhubBlueDark),
                       ),
                     )
                   ],
                 )),
             new Padding(
                 // Esta seccion sera para los botones de acciones
-                padding: new EdgeInsets.all(
-                    7.0), // Un padding general entre cada elemento
+                padding: new EdgeInsets.symmetric(
+                    horizontal: 25.0), // Un padding general entre cada elemento
                 child: new Row(
                   // mainAxisAlignment permite alinear el contenido dentro de Row
                   // en este caso le digo que use spaceBetwee, esto hara que
@@ -351,7 +375,9 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text('Aire acondicionado',
-                          style: TextStyle(fontSize: ScreenUtil().setSp(20))),
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(10),
+                              color: kClubhubBlueDark)),
                     ),
 
                     new FlatButton.icon(
@@ -362,14 +388,16 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text('Servicio a la habitación',
-                          style: TextStyle(fontSize: ScreenUtil().setSp(20))),
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(10),
+                              color: kClubhubBlueDark)),
                     ),
                   ],
                 )),
             new Padding(
                 // Esta seccion sera para los botones de acciones
-                padding: new EdgeInsets.all(
-                    7.0), // Un padding general entre cada elemento
+                padding: new EdgeInsets.symmetric(
+                    horizontal: 25.0), // Un padding general entre cada elemento
                 child: new Row(
                   // mainAxisAlignment permite alinear el contenido dentro de Row
                   // en este caso le digo que use spaceBetwee, esto hara que
@@ -386,7 +414,9 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text('Balcón',
-                          style: TextStyle(fontSize: ScreenUtil().setSp(20))),
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(10),
+                              color: kClubhubBlueDark)),
                     ),
 
                     new FlatButton.icon(
@@ -397,7 +427,9 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text('Satélite/TV por cable',
-                          style: TextStyle(fontSize: ScreenUtil().setSp(20))),
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(10),
+                              color: kClubhubBlueDark)),
                     ),
                   ],
                 )),
@@ -428,6 +460,7 @@ class DetailScreen extends StatelessWidget {
               });
         },
         child: Icon(Icons.add_shopping_cart),
+        backgroundColor: kClubhubBlueMain,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -440,15 +473,14 @@ class MyDialog extends StatefulWidget {
 }
 
 class _MyDialogState extends State<MyDialog> {
-  Color _c = Colors.redAccent;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
         content: Container(
-          height: MediaQuery.of(context).size.height / 2.3,
-          width: MediaQuery.of(context).size.width / 1.5,
+          height: ScreenUtil.getInstance().setHeight(400),
+          width: ScreenUtil.getInstance().setWidth(260),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -456,17 +488,17 @@ class _MyDialogState extends State<MyDialog> {
                 children: <Widget>[
                   Text(
                     _habTitle,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.black,
+                        color: kClubhubBlueDark,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14.0),
+                        fontSize: ScreenUtil.getInstance().setSp(15)),
                   ),
                   Text(
                     "Días a reservar :   ",
                     style: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        color: kClubhubTextPrimary,
+                        fontSize: ScreenUtil.getInstance().setSp(14),
                         height: 6),
                   ),
                   RaisedButton(
@@ -502,41 +534,45 @@ class _MyDialogState extends State<MyDialog> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                " Desde:  ",
-                                style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    "Desde:  ",
+                                    style: TextStyle(
+                                        fontSize:
+                                            ScreenUtil.getInstance().setSp(12),
+                                        color: kClubhubTextPrimary),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.date_range,
+                                            size: 18.0,
+                                            color: kClubhubBlueMain,
+                                          ),
+                                          Text(
+                                            " $_dateInitial ",
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil.getInstance()
+                                                        .setSp(15),
+                                                color: kClubhubBlueMain),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.date_range,
-                                      size: 18.0,
-                                      color: Colors.blueAccent,
-                                    ),
-                                    Text(
-                                      " $_dateInitial",
-                                      style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Text(
-                            "  edit",
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
+                            ),
                           ),
                         ],
                       ),
@@ -544,7 +580,7 @@ class _MyDialogState extends State<MyDialog> {
                     color: _colorDateInicial,
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: ScreenUtil.getInstance().setHeight(15),
                   ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
@@ -594,41 +630,45 @@ class _MyDialogState extends State<MyDialog> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                "Hasta:  ",
-                                style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    "Hasta:  ",
+                                    style: TextStyle(
+                                        fontSize:
+                                            ScreenUtil.getInstance().setSp(12),
+                                        color: kClubhubTextPrimary),
+                                  ),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.date_range,
+                                            size: 18.0,
+                                            color: kClubhubBlueMain,
+                                          ),
+                                          Text(
+                                            " $_dateFinal ",
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil.getInstance()
+                                                        .setSp(15),
+                                                color: kClubhubBlueMain),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.date_range,
-                                      size: 18.0,
-                                      color: Colors.blueAccent,
-                                    ),
-                                    Text(
-                                      " $_dateFinal ",
-                                      style: TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18.0),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Text(
-                            "  edit",
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
+                            ),
                           ),
                         ],
                       ),
@@ -649,7 +689,7 @@ class _MyDialogState extends State<MyDialog> {
           ),
         ),
         actions: [
-          RaisedButton(
+          FlatButton(
             onPressed: () {
               _dateInitial = "Not set";
               _dateFinal = "Not set";
@@ -663,45 +703,44 @@ class _MyDialogState extends State<MyDialog> {
             },
             child: Text(
               "Volver",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: kClubhubBlueDark, fontSize: ScreenUtil.getInstance().setSp(13)),
             ),
           ),
           RaisedButton(
+            color: kClubhubBlueDark,
             onPressed: () {
               if (_dateFinalTime == null || _dateInitialTime == null) {
                 _error = 'Debe completar todos los campos.';
                 setState(() {});
               } else {
-                
-                  _instance.collection('historialReservaciones').add({
-                    'socio': 'Jonh Doe',
-                    'id_socio': 'JD12345',
-                    'name': _habTitle,
-                    'price': _habPrice,
-                    'initialdate': _dateInitialTime,
-                    'finaldate': _dateFinalTime
-                  });
+                _instance.collection('historialReservaciones').add({
+                  'socio': 'Jonh Doe',
+                  'id_socio': 'JD12345',
+                  'name': _habTitle,
+                  'price': _habPrice,
+                  'initialdate': _dateInitialTime,
+                  'finaldate': _dateFinalTime
+                });
 
-                  Navigator.pop(context);
-                  _dateInitial = "Not set";
-                  _dateFinal = "Not set";
-                  _dateInitialTime = null;
-                  _dateFinalTime = null;
-                  _error = '';
-                  _colorDateFinal = Colors.white;
-                  _colorDateInicial = Colors.white;
+                Navigator.pop(context);
+                _dateInitial = "Not set";
+                _dateFinal = "Not set";
+                _dateInitialTime = null;
+                _dateFinalTime = null;
+                _error = '';
+                _colorDateFinal = Colors.white;
+                _colorDateInicial = Colors.white;
 
-                  Flushbar(
-                    title: "RESERVA EXITOSA!",
-                    message: " Puede verla añadida a su historial ",
-                    duration: Duration(seconds: 3),
-                  )..show(context);
-                 
-                 }
+                Flushbar(
+                  title: "RESERVA EXITOSA!",
+                  message: " Puede verla añadida a su historial ",
+                  duration: Duration(seconds: 3),
+                )..show(context);
+              }
             },
             child: Text(
               "Reservar",
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(13))
             ),
           ),
         ]);

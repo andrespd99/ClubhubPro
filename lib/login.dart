@@ -142,16 +142,16 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             width: 12.0,
                           ),
-                          GestureDetector(
-                            onTap: _radio,
-                            child: radioButton(_isSelected),
-                          ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Text("Recuerdame",
-                              style: TextStyle(
-                                  fontSize: 12, fontFamily: "Poppins-Medium"))
+                          // GestureDetector(
+                          //   onTap: _radio,
+                          //   child: radioButton(_isSelected),
+                          // ),
+                          // SizedBox(
+                          //   width: 8.0,
+                          // ),
+                          // Text("Recuerdame",
+                          //     style: TextStyle(
+                          //         fontSize: 12, fontFamily: "Poppins-Medium"))
                         ],
                       ),
                       InkWell(
@@ -198,16 +198,16 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: ScreenUtil.getInstance().setHeight(40),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      horizontalLine(),
-                      Text("Social Login",
-                          style: TextStyle(
-                              fontSize: 16.0, fontFamily: "Poppins-Medium")),
-                      horizontalLine()
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     horizontalLine(),
+                  //     Text("Social Login",
+                  //         style: TextStyle(
+                  //             fontSize: 16.0, fontFamily: "Poppins-Medium")),
+                  //     horizontalLine()
+                  //   ],
+                  // ),
                   SizedBox(
                     height: ScreenUtil.getInstance().setHeight(40),
                   ),
@@ -249,25 +249,25 @@ class _LoginPageState extends State<LoginPage> {
                   //     )
                   //   ],
                   // ),
-                  SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(30),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Nuevo usuario? ",
-                        style: TextStyle(fontFamily: "Poppins-Medium"),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Text("Registrate",
-                            style: TextStyle(
-                                color: Color(0xFF5d74e3),
-                                fontFamily: "Poppins-Bold")),
-                      )
-                    ],
-                  )
+                  // SizedBox(
+                  //   height: ScreenUtil.getInstance().setHeight(30),
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     Text(
+                  //       "Nuevo usuario? ",
+                  //       style: TextStyle(fontFamily: "Poppins-Medium"),
+                  //     ),
+                  //     InkWell(
+                  //       onTap: () {},
+                  //       child: Text("Registrate",
+                  //           style: TextStyle(
+                  //               color: Color(0xFF5d74e3),
+                  //               fontFamily: "Poppins-Bold")),
+                  //     )
+                  //   ],
+                  // )
                 ],
               ),
             ),

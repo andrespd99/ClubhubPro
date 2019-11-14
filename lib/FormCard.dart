@@ -62,13 +62,13 @@ class FormCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(
-                  "Olvido su contraseña?",
-                  style: TextStyle(
-                      color: kClubhubBlueDark,
-                      fontFamily: "Poppins-Medium",
-                      fontSize: ScreenUtil.getInstance().setSp(28)),
-                )
+                // Text(
+                //   "Olvido su contraseña?",
+                //   style: TextStyle(
+                //       color: kClubhubBlueDark,
+                //       fontFamily: "Poppins-Medium",
+                //       fontSize: ScreenUtil.getInstance().setSp(28)),
+                // )
               ],
             ),
           ],
