@@ -26,7 +26,6 @@ class FormCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("Prueba"),
             Text("Iniciar sesion",
                 style: TextStyle(
                     fontSize: ScreenUtil.getInstance().setSp(45),
