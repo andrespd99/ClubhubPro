@@ -89,6 +89,7 @@ class InvitationCheckoutState extends State<InvitationCheckout> {
               color: kClubhubTextPrimary,
               indent: 15.0,
               endIndent: 15.0,
+              thickness: 0.4,
             ),
             itemCount: widget.invitedFriends.length,
             itemBuilder: (context, index) {
@@ -113,13 +114,23 @@ class InvitationCheckoutState extends State<InvitationCheckout> {
         SizedBox(width: ScreenUtil.getInstance().setWidth(10)),
         Text(
           friend.name,
-          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(12)),
         ),
-        SizedBox(width: ScreenUtil.getInstance().setWidth(30)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+            width: 0.5,
+            height: 17,
+            color: const Color(0xFFB6B6B6),
+          ),
+        ),
         Text(
-          friend.cid,
-          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
-        ),
+          'C.I. '+friend.cid,
+          style: TextStyle(
+            fontSize: ScreenUtil.getInstance().setSp(10),
+            color: const Color(0xFFB6B6B6),
+          ),
+        )
       ],
     );
   }

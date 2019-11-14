@@ -13,8 +13,8 @@ class _InvitationMainState extends State<InvitationMain> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
+
 
     return Column(
       children: <Widget>[
@@ -41,8 +41,8 @@ class _InvitationMainState extends State<InvitationMain> {
           child: InkWell(
             child: Stack(
               children: <Widget>[
-                backgroundImage(2),
-                onTopContent(2),
+                // backgroundImage(2),
+                // onTopContent(2),
                 // BackdropFilter(
                 //   filter: ImageFilter.blur(
                 //     sigmaX: 2.1,
@@ -76,7 +76,12 @@ class _InvitationMainState extends State<InvitationMain> {
                 SizedBox(
                   width: 15,
                 ),
-                Icon(Icons.info_outline)
+                IconButton(
+                  icon: Icon(Icons.info_outline),
+                  onPressed: () {
+                    _ackAlert(context);
+                  },
+                )
               ],
             ),
           ),
@@ -120,12 +125,12 @@ class _InvitationMainState extends State<InvitationMain> {
       case 1:
         {
           return new Positioned(
-            right: 10.0,
+            right: 25.0,
             bottom: 20.0,
             child: Text(
               'Invitar amigos',
               style: TextStyle(
-                  fontSize: ScreenUtil.getInstance().setSp(40),
+                  fontSize: ScreenUtil.getInstance().setSp(24),
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -134,12 +139,12 @@ class _InvitationMainState extends State<InvitationMain> {
       case 2:
         {
           return new Positioned(
-            right: 10.0,
+            right: 25.0,
             bottom: 20.0,
             child: Text(
               'Ver historial \n de invitados',
               style: TextStyle(
-                  fontSize: ScreenUtil.getInstance().setSp(40),
+                  fontSize: ScreenUtil.getInstance().setSp(24),
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -149,5 +154,31 @@ class _InvitationMainState extends State<InvitationMain> {
         break;
       default:
     }
+  }
+
+  Future<void> _ackAlert(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Invitaciones de cortesia'),
+          content: Container(
+              width: ScreenUtil.getInstance().setWidth(140),
+              child: Text(
+                  'Las invitaciones de cortesia son invitaciones gratuitas que se renuevan mensualmente al pagar a tiempo su accion.',
+                  style: TextStyle(
+                    fontSize: ScreenUtil.getInstance().setSp(10)
+                  ),)),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -97,38 +97,55 @@ class _InvitationsState extends State<Invitations> {
   }
 
   Widget showFriendsList() {
-    return Container(
-      height: ScreenUtil.getInstance().setHeight(470),
-      decoration: BoxDecoration(
-          border: Border.all(
-        color: Colors.black12,
-        width: 1.5,
-      )),
-      child: StreamBuilder(
-          stream: Firestore.instance.collection('userFriends').snapshots(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            var documents = snapshot.data.documents;
-            if (!snapshot.hasData) {
-              return showLoadingCircle();
-            } else {
-              return Scrollbar(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => Divider(
-                    color: kClubhubTextPrimary,
-                    indent: 15.0,
-                    endIndent: 15.0,
-                  ),
-                  itemCount: documents.length,
-                  itemBuilder: (_, index) {
-                    return ListTile(
-                      // enabled: !documents[index].data['isSelected'],
-                      title: _buildFriendTile(context, documents[index], index),
-                    );
-                  },
-                ),
-              );
-            }
-          }),
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text('Amigos',
+              style: TextStyle(
+                fontSize: ScreenUtil.getInstance().setSp(18),
+                fontWeight: FontWeight.bold
+              ),
+            )
+          ],
+        ),
+        SizedBox(height: ScreenUtil.getInstance().setHeight(13),),
+        Container(
+          height: ScreenUtil.getInstance().setHeight(260),
+          decoration: BoxDecoration(
+              border: Border.all(
+            color: Colors.black12,
+            width: 1.5,
+          )),
+          child: StreamBuilder(
+              stream: Firestore.instance.collection('userFriends').snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                var documents = snapshot.data.documents;
+                if (!snapshot.hasData) {
+                  return showLoadingCircle();
+                } else {
+                  return Scrollbar(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => Divider(
+                        color: kClubhubTextPrimary,
+                        indent: 15.0,
+                        endIndent: 15.0,
+                        thickness: 0.4,
+                      ),
+                      itemCount: documents.length,
+                      itemBuilder: (_, index) {
+                        return ListTile(
+                          // enabled: !documents[index].data['isSelected'],
+                          title: _buildFriendTile(context, documents[index], index),
+                        );
+                      },
+                    ),
+                  );
+                }
+              }),
+        ),
+      ],
     );
   }
 
@@ -148,7 +165,7 @@ class _InvitationsState extends State<Invitations> {
         SizedBox(width: ScreenUtil.getInstance().setWidth(10)),
         Text(
           friend.data['name'],
-          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(12)),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -161,7 +178,7 @@ class _InvitationsState extends State<Invitations> {
         Text(
           'C.I. ' + friend.data['cid'],
           style: TextStyle(
-            fontSize: ScreenUtil.getInstance().setSp(22),
+            fontSize: ScreenUtil.getInstance().setSp(10),
             color: const Color(0xFFB6B6B6),
           ),
         ),
@@ -170,29 +187,46 @@ class _InvitationsState extends State<Invitations> {
   }
 
   Widget showInvitedList() {
-    return Container(
-        height: ScreenUtil.getInstance().setHeight(400),
-        decoration: BoxDecoration(
-            border: Border.all(
-          color: Colors.black12,
-          width: 1.5,
-        )),
-        child: Scrollbar(
-          child: ListView.separated(
-            separatorBuilder: (context, index) => Divider(
-              color: kClubhubTextPrimary,
-              indent: 15.0,
-              endIndent: 15.0,
-            ),
-            itemCount: guestsList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: _buildInvitedTile(
-                    context, guestsList.elementAt(index), index),
-              );
-            },
-          ),
-        ));
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text('Invitados',
+              style: TextStyle(
+                fontSize: ScreenUtil.getInstance().setSp(18),
+                fontWeight: FontWeight.bold
+              ),
+            )
+          ],
+        ),
+        SizedBox(height: ScreenUtil.getInstance().setHeight(13),),
+        Container(
+            height: ScreenUtil.getInstance().setHeight(180),
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: Colors.black12,
+              width: 1.5,
+            )),
+            child: Scrollbar(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => Divider(
+                  color: kClubhubTextPrimary,
+                  indent: 15.0,
+                  endIndent: 15.0,
+                  thickness: 0.4,
+                ),
+                itemCount: guestsList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: _buildInvitedTile(
+                        context, guestsList.elementAt(index), index),
+                  );
+                },
+              ),
+            )),
+      ],
+    );
   }
 
   Widget _buildInvitedTile(BuildContext context, GuestModel friend, int index) {
@@ -206,7 +240,7 @@ class _InvitationsState extends State<Invitations> {
         SizedBox(width: ScreenUtil.getInstance().setWidth(10)),
         Text(
           friend.name,
-          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(12)),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -219,7 +253,7 @@ class _InvitationsState extends State<Invitations> {
         Text(
           'C.I. ' + friend.cid,
           style: TextStyle(
-            fontSize: ScreenUtil.getInstance().setSp(22),
+            fontSize: ScreenUtil.getInstance().setSp(10),
             color: const Color(0xFFB6B6B6),
           ),
         ),
