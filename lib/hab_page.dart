@@ -1,12 +1,55 @@
-import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:clubhub/historial_Reservaciones.dart';
+import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flushbar/flushbar.dart';
+
+var finalDate;
+var initialDate;
+
+var finalDateTime;
+var initialDateTime;
 
 TextStyle bold24Roboto =
-    TextStyle(color: Colors.black, fontSize: 20.0, height: 2);
+    TextStyle(color: Colors.blueAccent, fontSize: 20.0, height: 2);
+
+String _dateInitial = "Not set";
+String _dateFinal = "Not set";
+DateTime _dateInitialTime = null;
+DateTime _dateFinalTime = null;
+String _error = '';
+String _habTitle = "";
+double _habPrice = 0;
+var _instance;
+var detailsContext;
+var _colorDateInicial = Colors.white;
+var _colorDateFinal = Colors.white;
+
+class Compra {
+  String id;
+  double price;
+  String name;
+
+  Compra({this.id, this.price, this.name});
+}
+
+class DateTimePicker extends StatefulWidget {
+  @override
+  _DateTimePickerState createState() => _DateTimePickerState();
+}
+
+class _DateTimePickerState extends State<DateTimePicker> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ListasHabPage(),
+    );
+  }
+}
 
 class ListasHabPage extends StatelessWidget {
   @override
@@ -308,8 +351,7 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text('Aire acondicionado',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(20))),
+                          style: TextStyle(fontSize: ScreenUtil().setSp(20))),
                     ),
 
                     new FlatButton.icon(
@@ -343,8 +385,8 @@ class DetailScreen extends StatelessWidget {
 
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
-                      label: Text('Balcón', style: TextStyle(
-                        fontSize: ScreenUtil().setSp(20))),
+                      label: Text('Balcón',
+                          style: TextStyle(fontSize: ScreenUtil().setSp(20))),
                     ),
 
                     new FlatButton.icon(
@@ -355,8 +397,7 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text('Satélite/TV por cable',
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(20))),
+                          style: TextStyle(fontSize: ScreenUtil().setSp(20))),
                     ),
                   ],
                 )),
@@ -371,36 +412,298 @@ class DetailScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog<void>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('Reserva exitosa'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: <Widget>[
-                      Text('Habitación reservada por 15 minutos.'),
-                      Text(
-                          'Dirigase al carrito de compras para terminar el proceso.'),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Aceptar'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+          detailsContext = context;
+          _habTitle = snapshot.data.documents[index].data.values
+              .elementAt(3)
+              .toString();
+
+          _habPrice = snapshot.data.documents[index].data.values.elementAt(2);
+
+          _instance = Firestore.instance;
+
+          showDialog(
+              context: context,
+              builder: (_) {
+                return MyDialog();
+              });
         },
         child: Icon(Icons.add_shopping_cart),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+}
+
+class MyDialog extends StatefulWidget {
+  @override
+  _MyDialogState createState() => new _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  Color _c = Colors.redAccent;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        content: Container(
+          height: MediaQuery.of(context).size.height / 2.3,
+          width: MediaQuery.of(context).size.width / 1.5,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    _habTitle,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0),
+                  ),
+                  Text(
+                    "Días a reservar :   ",
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        height: 6),
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    elevation: 4.0,
+                    onPressed: () {
+                      DatePicker.showDatePicker(context,
+                          theme: DatePickerTheme(
+                            containerHeight: 210.0,
+                          ),
+                          showTitleActions: true,
+                          minTime: DateTime.now(),
+                          maxTime: DateTime(DateTime.now().year + 1, 12, 31),
+                          onChanged: (date) {
+                        _dateInitialTime = date;
+                      }, onConfirm: (date) {
+                        _dateInitialTime = date;
+                        _dateInitial =
+                            '${date.year} - ${date.month} - ${date.day}';
+                        setState(() {});
+
+                        _error = '';
+                        _colorDateInicial = Colors.white;
+                        _colorDateFinal = Colors.white;
+                        _colorDateInicial = Colors.white;
+                        setState(() {});
+                      }, currentTime: DateTime.now(), locale: LocaleType.es);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                " Desde:  ",
+                                style: TextStyle(
+                                    color: Colors.blueAccent,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              ),
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.date_range,
+                                      size: 18.0,
+                                      color: Colors.blueAccent,
+                                    ),
+                                    Text(
+                                      " $_dateInitial",
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Text(
+                            "  edit",
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                    color: _colorDateInicial,
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                    elevation: 4.0,
+                    onPressed: () {
+                      if (_dateInitialTime == null) {
+                        _error = 'Seleccione una fecha inicial';
+                        _colorDateFinal = Colors.red[100];
+                        setState(() {});
+                      } else {
+                        DatePicker.showDatePicker(context,
+                            theme: DatePickerTheme(
+                              containerHeight: 210.0,
+                            ),
+                            showTitleActions: true,
+                            minTime: DateTime(
+                                _dateInitialTime.year,
+                                _dateInitialTime.month,
+                                _dateInitialTime.day + 1),
+                            maxTime: DateTime(
+                                _dateInitialTime.year,
+                                _dateInitialTime.month,
+                                _dateInitialTime.day + 5), onChanged: (date) {
+                          _dateFinalTime = date;
+                        }, onConfirm: (date) {
+                          _dateFinalTime = date;
+                          _dateFinal =
+                              '${date.year} - ${date.month} - ${date.day}';
+                          setState(() {});
+
+                          if (_dateInitialTime != null ||
+                              (_dateInitialTime.microsecondsSinceEpoch <
+                                  _dateFinalTime.microsecondsSinceEpoch)) {
+                            _error = '';
+                            _colorDateInicial = Colors.white;
+                            _colorDateFinal = Colors.white;
+                            _colorDateFinal = Colors.white;
+                            setState(() {});
+                          }
+                        }, currentTime: DateTime.now(), locale: LocaleType.es);
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 50.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Hasta:  ",
+                                style: TextStyle(
+                                    color: Colors.blueAccent,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0),
+                              ),
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.date_range,
+                                      size: 18.0,
+                                      color: Colors.blueAccent,
+                                    ),
+                                    Text(
+                                      " $_dateFinal ",
+                                      style: TextStyle(
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18.0),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Text(
+                            "  edit",
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                    color: _colorDateFinal,
+                  ),
+                  Text(
+                    _error,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14.0,
+                        height: 6),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          RaisedButton(
+            onPressed: () {
+              _dateInitial = "Not set";
+              _dateFinal = "Not set";
+              _dateInitialTime = null;
+              _dateFinalTime = null;
+              _error = '';
+              _colorDateInicial = Colors.white;
+              _colorDateFinal = Colors.white;
+
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Volver",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+          RaisedButton(
+            onPressed: () {
+              if (_dateFinalTime == null || _dateInitialTime == null) {
+                _error = 'Debe completar todos los campos.';
+                setState(() {});
+              } else {
+                
+                  _instance.collection('historialReservaciones').add({
+                    'socio': 'Jonh Doe',
+                    'id_socio': 'JD12345',
+                    'name': _habTitle,
+                    'price': _habPrice,
+                    'initialdate': _dateInitialTime,
+                    'finaldate': _dateFinalTime
+                  });
+
+                  Navigator.pop(context);
+                  _dateInitial = "Not set";
+                  _dateFinal = "Not set";
+                  _dateInitialTime = null;
+                  _dateFinalTime = null;
+                  _error = '';
+                  _colorDateFinal = Colors.white;
+                  _colorDateInicial = Colors.white;
+
+                  Flushbar(
+                    title: "RESERVA EXITOSA!",
+                    message: " Puede verla añadida a su historial ",
+                    duration: Duration(seconds: 3),
+                  )..show(context);
+                 
+                 }
+            },
+            child: Text(
+              "Reservar",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+        ]);
   }
 }

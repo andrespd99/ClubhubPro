@@ -1,4 +1,5 @@
 import 'package:clubhub/hab_page.dart';
+import 'package:clubhub/historial_Reservaciones.dart';
 import 'package:clubhub/login.dart';
 import 'package:clubhub/models/invitations/InvitationHistory.dart';
 import 'package:clubhub/models/news/Bookmarks.dart';
@@ -96,7 +97,19 @@ class _HomeState extends State<Home> {
             leading: Icon(Icons.bookmark),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Bookmarks()));
+                  MaterialPageRoute(builder: (context) => Bookmarks()));}
+          ),
+          ListTile(
+            title: Text('Historial'),
+            leading: Icon(Icons.history),
+            onTap: () {
+              Navigator.push( 
+            context,
+            MaterialPageRoute(
+                            builder: (context) =>
+                                HistorialReservaciones(),
+                          ),
+                        );
             },
           ),
           // ListTile(
