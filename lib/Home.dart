@@ -1,4 +1,5 @@
 import 'package:clubhub/hab_page.dart';
+import 'package:clubhub/historial_Reservaciones.dart';
 import 'package:clubhub/login.dart';
 import 'package:flutter/material.dart';
 import 'Calendario.dart';
@@ -26,6 +27,8 @@ class _HomeState extends State<Home> {
         return InvitationMain();
       case 2:
         return ListasHabPage();
+       
+      
       // case 3:
       //   return Reservaciones();
         // case 4:
@@ -93,6 +96,20 @@ class _HomeState extends State<Home> {
             decoration: BoxDecoration(
               color: Colors.lightBlue,
             ),
+          ),
+         
+          ListTile(
+            title: Text('Historial'),
+            leading: Icon(Icons.history),
+            onTap: () {
+              Navigator.push( 
+            context,
+            MaterialPageRoute(
+                            builder: (context) =>
+                                HistorialReservaciones(),
+                          ),
+                        );
+            },
           ),
           // ListTile(
           //   title: Text('precio de invitaciones'),

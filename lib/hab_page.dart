@@ -1,25 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:clubhub/historial_Reservaciones.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flushbar/flushbar.dart';
 
 var finalDate;
 var initialDate;
 
 var finalDateTime;
 var initialDateTime;
-
-getTextDate(data) {
-  return TextField(
-    decoration: InputDecoration(
-      enabled: false,
-      labelText: data,
-    ),
-  );
-}
 
 TextStyle bold24Roboto =
     TextStyle(color: Colors.blueAccent, fontSize: 20.0, height: 2);
@@ -32,7 +24,7 @@ String _error = '';
 String _habTitle = "";
 double _habPrice = 0;
 var _instance;
-
+var detailsContext;
 var _colorDateInicial = Colors.white;
 var _colorDateFinal = Colors.white;
 
@@ -181,23 +173,6 @@ class ListasHabPage extends StatelessWidget {
 }
 
 class DetailScreen extends StatelessWidget {
-  DateTime selectedDate = DateTime.now();
-
-  Future<Null> _selectDate(BuildContext context) async {
-    this.selectedDate = showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2018),
-      lastDate: DateTime(2030),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.dark(),
-          child: child,
-        );
-      },
-    ) as DateTime;
-  }
-
   final AsyncSnapshot snapshot;
   final int index;
   DetailScreen({Key key, @required this.snapshot, @required this.index})
@@ -437,6 +412,7 @@ class DetailScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          detailsContext = context;
           _habTitle = snapshot.data.documents[index].data.values
               .elementAt(3)
               .toString();
@@ -469,7 +445,7 @@ class _MyDialogState extends State<MyDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
         content: Container(
-          height: MediaQuery.of(context).size.height / 2,
+          height: MediaQuery.of(context).size.height / 2.3,
           width: MediaQuery.of(context).size.width / 1.5,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -503,8 +479,9 @@ class _MyDialogState extends State<MyDialog> {
                             containerHeight: 210.0,
                           ),
                           showTitleActions: true,
-                          minTime: DateTime(2000, 1, 1),
-                          maxTime: DateTime(2022, 12, 31), onChanged: (date) {
+                          minTime: DateTime.now(),
+                          maxTime: DateTime(DateTime.now().year + 1, 12, 31),
+                          onChanged: (date) {
                         _dateInitialTime = date;
                       }, onConfirm: (date) {
                         _dateInitialTime = date;
@@ -512,20 +489,11 @@ class _MyDialogState extends State<MyDialog> {
                             '${date.year} - ${date.month} - ${date.day}';
                         setState(() {});
 
-                        if (_dateFinalTime != null ||
-                            (_dateInitialTime.microsecondsSinceEpoch <
-                                _dateFinalTime.microsecondsSinceEpoch)) {
-                          _error = '';
-                          _colorDateInicial = Colors.white;
-                          setState(() {});
-                        }
-
-                        if (_dateInitialTime.microsecondsSinceEpoch >=
-                            _dateFinalTime.microsecondsSinceEpoch) {
-                          _error = 'Fecha inicial debe ser antes de la final';
-                          _colorDateInicial = Colors.red[100];
-                          setState(() {});
-                        }
+                        _error = '';
+                        _colorDateInicial = Colors.white;
+                        _colorDateFinal = Colors.white;
+                        _colorDateInicial = Colors.white;
+                        setState(() {});
                       }, currentTime: DateTime.now(), locale: LocaleType.es);
                     },
                     child: Container(
@@ -539,7 +507,7 @@ class _MyDialogState extends State<MyDialog> {
                               Text(
                                 " Desde:  ",
                                 style: TextStyle(
-                                    color:Colors.blueAccent,
+                                    color: Colors.blueAccent,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18.0),
                               ),
@@ -583,34 +551,42 @@ class _MyDialogState extends State<MyDialog> {
                         borderRadius: BorderRadius.circular(5.0)),
                     elevation: 4.0,
                     onPressed: () {
-                      DatePicker.showDatePicker(context,
-                          theme: DatePickerTheme(
-                            containerHeight: 210.0,
-                          ),
-                          showTitleActions: true,
-                          minTime: DateTime(2000, 1, 1),
-                          maxTime: DateTime(2022, 12, 31), onChanged: (date) {
-                        _dateFinalTime = date;
-                      }, onConfirm: (date) {
-                        _dateFinalTime = date;
-                        _dateFinal =
-                            '${date.year} - ${date.month} - ${date.day}';
+                      if (_dateInitialTime == null) {
+                        _error = 'Seleccione una fecha inicial';
+                        _colorDateFinal = Colors.red[100];
                         setState(() {});
+                      } else {
+                        DatePicker.showDatePicker(context,
+                            theme: DatePickerTheme(
+                              containerHeight: 210.0,
+                            ),
+                            showTitleActions: true,
+                            minTime: DateTime(
+                                _dateInitialTime.year,
+                                _dateInitialTime.month,
+                                _dateInitialTime.day + 1),
+                            maxTime: DateTime(
+                                _dateInitialTime.year,
+                                _dateInitialTime.month,
+                                _dateInitialTime.day + 5), onChanged: (date) {
+                          _dateFinalTime = date;
+                        }, onConfirm: (date) {
+                          _dateFinalTime = date;
+                          _dateFinal =
+                              '${date.year} - ${date.month} - ${date.day}';
+                          setState(() {});
 
-                        if (_dateInitialTime != null ||
-                            (_dateInitialTime.microsecondsSinceEpoch <
-                                _dateFinalTime.microsecondsSinceEpoch)) {
-                          _error = '';
-                          _colorDateFinal = Colors.white;
-                          setState(() {});
-                        }
-                        if (_dateInitialTime.microsecondsSinceEpoch >=
-                            _dateFinalTime.microsecondsSinceEpoch) {
-                          _error = 'Fecha inicial debe ser antes de la final';
-                          _colorDateFinal = Colors.red[100];
-                          setState(() {});
-                        }
-                      }, currentTime: DateTime.now(), locale: LocaleType.es);
+                          if (_dateInitialTime != null ||
+                              (_dateInitialTime.microsecondsSinceEpoch <
+                                  _dateFinalTime.microsecondsSinceEpoch)) {
+                            _error = '';
+                            _colorDateInicial = Colors.white;
+                            _colorDateFinal = Colors.white;
+                            _colorDateFinal = Colors.white;
+                            setState(() {});
+                          }
+                        }, currentTime: DateTime.now(), locale: LocaleType.es);
+                      }
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -680,9 +656,9 @@ class _MyDialogState extends State<MyDialog> {
               _dateInitialTime = null;
               _dateFinalTime = null;
               _error = '';
-              _colorDateInicial=Colors.white;
-              _colorDateFinal=Colors.white;
-              
+              _colorDateInicial = Colors.white;
+              _colorDateFinal = Colors.white;
+
               Navigator.pop(context);
             },
             child: Text(
@@ -693,43 +669,39 @@ class _MyDialogState extends State<MyDialog> {
           RaisedButton(
             onPressed: () {
               if (_dateFinalTime == null || _dateInitialTime == null) {
-                _error = 'Debe seleccionar fecha final e inicial';
-                setState(() {});
-              } else if (_dateInitialTime.microsecondsSinceEpoch >=
-                  _dateFinalTime.microsecondsSinceEpoch) {
-                _error = 'Fecha inicial debe ser antes de la final';
-                _colorDateFinal= Colors.red[100];
+                _error = 'Debe completar todos los campos.';
                 setState(() {});
               } else {
-                var newCompra = new Compra();
+                
+                  _instance.collection('historialReservaciones').add({
+                    'socio': 'Jonh Doe',
+                    'id_socio': 'JD12345',
+                    'name': _habTitle,
+                    'price': _habPrice,
+                    'initialdate': _dateInitialTime,
+                    'finaldate': _dateFinalTime
+                  });
 
-                newCompra.name = _habTitle;
+                  Navigator.pop(context);
+                  _dateInitial = "Not set";
+                  _dateFinal = "Not set";
+                  _dateInitialTime = null;
+                  _dateFinalTime = null;
+                  _error = '';
+                  _colorDateFinal = Colors.white;
+                  _colorDateInicial = Colors.white;
 
-                newCompra.price = _habPrice;
-
-                //Insertamos datos de la reservacion en la BD
-
-                _instance.collection('historialReservaciones').add({
-                  'socio': 'Jonh Doe',
-                  'id_socio': 'JD12345',
-                  'name': newCompra.name,
-                  'price': newCompra.price,
-                  'initialdate': _dateInitialTime,
-                  'finaldate': _dateFinalTime
-                });
-                Navigator.pop(context);
-                _dateInitial = "Not set";
-                _dateFinal = "Not set";
-                _dateInitialTime = null;
-                _dateFinalTime = null;
-                _error = '';
-                _colorDateFinal= Colors.white;
-                _colorDateInicial= Colors.white;
-              }
+                  Flushbar(
+                    title: "RESERVA EXITOSA!",
+                    message: " Puede verla añadida a su historial ",
+                    duration: Duration(seconds: 3),
+                  )..show(context);
+                 
+                 }
             },
             child: Text(
               "Reservar",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
         ]);
