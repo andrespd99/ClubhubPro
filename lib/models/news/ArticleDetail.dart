@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhub/assets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share/share.dart';
 
 class ArticleDetail extends StatefulWidget {
   final DocumentSnapshot article;
@@ -53,7 +54,9 @@ class _ArticleDetailState extends State<ArticleDetail> {
                       child: Row(
                         children: <Widget>[
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Share.share(widget.article.data['content']);
+                            },
                             icon: Icon(Icons.share),
                           ),
                           IconButton(
