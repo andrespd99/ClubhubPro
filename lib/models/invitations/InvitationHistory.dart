@@ -35,28 +35,12 @@ class _InvitationHistoryState extends State<InvitationHistory> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        height: MediaQuery.of(context).size.width,
-        // width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
         ),
         child: Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20.0, horizontal: 15.0),
-                  child: Text(
-                    'Historial de Invitaciones',
-                    style: TextStyle(
-                        fontSize: ScreenUtil.getInstance().setSp(43),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
+            invitationHistoryViewTitle(),
             StreamBuilder(
                 stream: database.collection('inviteHistory').snapshots(),
                 builder: (BuildContext context,
@@ -65,6 +49,7 @@ class _InvitationHistoryState extends State<InvitationHistory> {
                     return showLoadingCircle();
                   } else {
                     return ListView.builder(
+                        shrinkWrap: true,
                         itemCount: snapshot.data.documents.length,
                         itemBuilder: (_, index) {
                           return ListTile(
@@ -83,7 +68,6 @@ class _InvitationHistoryState extends State<InvitationHistory> {
   Widget _buildHistoryItem(
       BuildContext context, DocumentSnapshot historySnapshot) {
     return Container(
-      width: double.infinity,
       height: ScreenUtil.getInstance().setHeight(132),
       child: Row(
         children: <Widget>[
@@ -126,19 +110,19 @@ class _InvitationHistoryState extends State<InvitationHistory> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 return ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (_, index ){
+                  shrinkWrap: true,
+                  itemBuilder: (_, index) {
                     return ListTile(
-                            title: guestsList(
-                                context, snapshot.data.documents[index]),
-                          );
-                    },
+                      title:
+                          guestsList(context, snapshot.data.documents[index]),
+                    );
+                  },
                 );
               },
             ),
           ),
           Text(
-            historySnapshot.data['date'],
+            historySnapshot.data['date'].toString(),
             style: TextStyle(
                 color: kClubhubButtonDark2,
                 fontSize: ScreenUtil.getInstance().setSp(11)),
@@ -152,5 +136,22 @@ class _InvitationHistoryState extends State<InvitationHistory> {
 
   Widget guestsList(BuildContext context, DocumentSnapshot guest) {
     return Text(guest.data['name']);
+  }
+
+  Widget invitationHistoryViewTitle() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
+          child: Text(
+            'Historial de Invitaciones',
+            style: TextStyle(
+                fontSize: ScreenUtil.getInstance().setSp(43),
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
   }
 }

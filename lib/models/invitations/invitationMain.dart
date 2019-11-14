@@ -126,7 +126,8 @@ class _InvitationMainState extends State<InvitationMain> {
               'Invitar amigos',
               style: TextStyle(
                   fontSize: ScreenUtil.getInstance().setSp(40),
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           );
         }
@@ -139,7 +140,8 @@ class _InvitationMainState extends State<InvitationMain> {
               'Ver historial \n de invitados',
               style: TextStyle(
                   fontSize: ScreenUtil.getInstance().setSp(40),
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           );
         }

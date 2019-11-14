@@ -1,5 +1,6 @@
 import 'package:clubhub/hab_page.dart';
 import 'package:clubhub/login.dart';
+import 'package:clubhub/models/invitations/InvitationHistory.dart';
 import 'package:clubhub/models/news/Bookmarks.dart';
 import 'package:flutter/material.dart';
 import 'package:clubhub/models/news/News.dart';
@@ -25,10 +26,6 @@ class _HomeState extends State<Home> {
         return InvitationMain();
       case 2:
         return ListasHabPage();
-        // case 3:
-        //   return Reservaciones();
-        // case 4:
-        //   return AdminPanel();
 
         break;
       default:
@@ -103,8 +100,12 @@ class _HomeState extends State<Home> {
             },
           ),
           // ListTile(
-          //   title: Text('Historial de Pagos'),
+          //   title: Text('Historial de invitaciones'),
           //   leading: Icon(Icons.payment),
+          //   onTap: () {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => InvitationHistory()));
+          //   },
           // ),
           // ListTile(
           //   title: Text('Historial de visitas'),
@@ -122,14 +123,14 @@ class _HomeState extends State<Home> {
           //   title: Text('soporte al cliente'),
           //   leading: Icon(Icons.help),
           // ),
-          ListTile(
-            title: Text('cerrar sesion'),
-            leading: Icon(Icons.close),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
-            },
-          ),
+          // ListTile(
+          //   title: Text('cerrar sesion'),
+          //   leading: Icon(Icons.close),
+          //   onTap: () {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => LoginPage()));
+          //   },
+          // ),
         ],
       ),
     );

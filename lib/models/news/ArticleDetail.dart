@@ -23,6 +23,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil(width: 375, height: 812)..init(context);
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -43,7 +44,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
       child: Text(
         widget.article.data['title'],
         style: TextStyle(
-          fontSize: ScreenUtil.getInstance().setSp(45),
+          fontSize: ScreenUtil.getInstance().setSp(18),
           color: kClubhubBlueDark,
         ),
       ),
@@ -94,7 +95,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
         child: Text(
           widget.article.data['content'],
           style: TextStyle(
-            fontSize: ScreenUtil().setSp(30),
+            fontSize: ScreenUtil().setSp(14),
           ),
         ),
       ),

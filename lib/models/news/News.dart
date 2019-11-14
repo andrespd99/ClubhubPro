@@ -40,13 +40,6 @@ class _NewsState extends State<News> {
 
   @override
   Widget build(BuildContext context) {
-    _navigateToDetail(DocumentSnapshot article) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ArticleDetail(article: article)));
-    }
-
     return Container(
       child: FutureBuilder(
           future: _data,
@@ -153,4 +146,11 @@ class _NewsState extends State<News> {
       ),
     );
   }
+
+  void _navigateToDetail(DocumentSnapshot article) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ArticleDetail(article: article)));
+    }
 }
