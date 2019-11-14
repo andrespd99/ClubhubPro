@@ -35,6 +35,7 @@ class AddFriendFormState extends State<AddFriendForm> {
       'name': name,
       'cid': cid,
       'birthdate': DateTime.tryParse(birthdate),
+      'isSelected': false,
     });
   }
 

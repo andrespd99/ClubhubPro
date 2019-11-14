@@ -1,5 +1,6 @@
 import 'package:clubhub/hab_page.dart';
 import 'package:clubhub/login.dart';
+import 'package:clubhub/models/news/Bookmarks.dart';
 import 'package:flutter/material.dart';
 import 'package:clubhub/models/news/News.dart';
 import 'package:clubhub/assets/colors.dart';
@@ -24,8 +25,8 @@ class _HomeState extends State<Home> {
         return InvitationMain();
       case 2:
         return ListasHabPage();
-      // case 3:
-      //   return Reservaciones();
+        // case 3:
+        //   return Reservaciones();
         // case 4:
         //   return AdminPanel();
 
@@ -34,10 +35,11 @@ class _HomeState extends State<Home> {
         return News();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       drawer: invokeDrawer(),
+      drawer: invokeDrawer(),
       appBar: AppBar(
         title: Text(''),
         backgroundColor: kClubhubBlue400,
@@ -92,10 +94,14 @@ class _HomeState extends State<Home> {
               color: Colors.lightBlue,
             ),
           ),
-          // ListTile(
-          //   title: Text('precio de invitaciones'),
-          //   leading: Icon(Icons.info),
-          // ),
+          ListTile(
+            title: Text('Noticias guardadas'),
+            leading: Icon(Icons.bookmark),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Bookmarks()));
+            },
+          ),
           // ListTile(
           //   title: Text('Historial de Pagos'),
           //   leading: Icon(Icons.payment),
@@ -120,7 +126,8 @@ class _HomeState extends State<Home> {
             title: Text('cerrar sesion'),
             leading: Icon(Icons.close),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
             },
           ),
         ],

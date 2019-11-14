@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhub/UtilWidgets.dart';
 import 'package:clubhub/assets/colors.dart';
-import 'package:clubhub/models/invitations/FriendInvited.dart';
+import 'package:clubhub/models/invitations/InvitationModels.dart';
 import 'package:clubhub/models/invitations/addFriend.dart';
 import 'package:clubhub/models/invitations/invitationCheckout.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,10 @@ class Invitations extends StatefulWidget {
 class _InvitationsState extends State<Invitations> {
   bool _isVisible = false;
 
-  List<FriendInvited> listOfInvited = new List<FriendInvited>();
+  List<GuestModel> guestsList = new List<GuestModel>();
+
+  var database = Firestore.instance;
+  var friendsSize = 0;
 
   void _toggleVisibility() {
     setState(() {
@@ -27,11 +30,18 @@ class _InvitationsState extends State<Invitations> {
     });
   }
 
+  // void _getFriendsSize() {
+  //   database
+  //       .collection('userFriends')
+  //       .getDocuments()
+  //       .then((snap) => {friendsSize = snap.documents.length});
+  // }
+
   @override
   void initState() {
     super.initState();
     _isVisible = false;
-    listOfInvited.clear();
+    guestsList.clear();
   }
 
   @override
@@ -41,7 +51,6 @@ class _InvitationsState extends State<Invitations> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Invitar"),
@@ -76,19 +85,7 @@ class _InvitationsState extends State<Invitations> {
                       showInvitedList(),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0.0, 8.0, 10.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            RaisedButton(
-                              child: Text('Continuar'),
-                              textColor: Colors.white,
-                              onPressed: () {
-                                Navigator.push(context, 
-                                MaterialPageRoute(builder: (context) => InvitationCheckout(invitedFriends: this.listOfInvited)));
-                              },
-                            ),
-                          ],
-                        ),
+                        child: showContinueButton(),
                       ),
                     ],
                   )),
@@ -124,8 +121,8 @@ class _InvitationsState extends State<Invitations> {
                   itemCount: documents.length,
                   itemBuilder: (_, index) {
                     return ListTile(
-                      title: _buildFriendTile(
-                          context, snapshot.data.documents[index], index),
+                      // enabled: !documents[index].data['isSelected'],
+                      title: _buildFriendTile(context, documents[index], index),
                     );
                   },
                 ),
@@ -153,10 +150,20 @@ class _InvitationsState extends State<Invitations> {
           friend.data['name'],
           style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
         ),
-        SizedBox(width: ScreenUtil.getInstance().setWidth(30)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+            width: 0.5,
+            height: 17,
+            color: const Color(0xFFB6B6B6),
+          ),
+        ),
         Text(
-          friend.data['cid'],
-          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+          'C.I. ' + friend.data['cid'],
+          style: TextStyle(
+            fontSize: ScreenUtil.getInstance().setSp(22),
+            color: const Color(0xFFB6B6B6),
+          ),
         ),
       ],
     );
@@ -177,19 +184,18 @@ class _InvitationsState extends State<Invitations> {
               indent: 15.0,
               endIndent: 15.0,
             ),
-            itemCount: listOfInvited.length,
+            itemCount: guestsList.length,
             itemBuilder: (context, index) {
               return ListTile(
                 title: _buildInvitedTile(
-                    context, listOfInvited.elementAt(index), index),
+                    context, guestsList.elementAt(index), index),
               );
             },
           ),
         ));
   }
 
-  Widget _buildInvitedTile(
-      BuildContext context, FriendInvited friend, int index) {
+  Widget _buildInvitedTile(BuildContext context, GuestModel friend, int index) {
     return Row(
       children: <Widget>[
         Container(
@@ -202,20 +208,23 @@ class _InvitationsState extends State<Invitations> {
           friend.name,
           style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
         ),
-        SizedBox(width: ScreenUtil.getInstance().setWidth(30)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Container(
+            width: 0.5,
+            height: 17,
+            color: const Color(0xFFB6B6B6),
+          ),
+        ),
         Text(
-          friend.cid,
-          style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(25)),
+          'C.I. ' + friend.cid,
+          style: TextStyle(
+            fontSize: ScreenUtil.getInstance().setSp(22),
+            color: const Color(0xFFB6B6B6),
+          ),
         ),
       ],
     );
-  }
-
-  removeFriendFromList(DocumentSnapshot friend) {
-    Firestore.instance
-        .collection('userFriends')
-        .document(friend.documentID)
-        .delete();
   }
 
   Widget showAddToFriendsListButton() {
@@ -245,7 +254,7 @@ class _InvitationsState extends State<Invitations> {
       heroTag: "addFriendBtn$index",
       backgroundColor: Colors.green,
       onPressed: () {
-        addFriendToInviteList(friend);
+        addFriendToInviteList(friend, index);
       },
       child: Icon(Icons.add),
     );
@@ -264,29 +273,11 @@ class _InvitationsState extends State<Invitations> {
     return FloatingActionButton(
       heroTag: "removeInvitedBtn$index",
       backgroundColor: Colors.redAccent,
-      onPressed: () => {removeInvitedFromList(cid)},
+      onPressed: () {
+        removeInvitedFromList(cid, index);
+      },
       child: Icon(Icons.remove),
     );
-  }
-
-  void addFriendToInviteList(DocumentSnapshot friend) {
-    FriendInvited newInvited =
-        new FriendInvited(friend.data['name'], friend.data['cid']);
-    setState(() {
-      listOfInvited.add(newInvited);
-    });
-  }
-
-  removeInvitedFromList(String cid) {
-    setState(() {
-      for (var i = 0; i < listOfInvited.length; i++) {
-        if (listOfInvited.elementAt(i).cid == cid) {
-          setState(() {
-            listOfInvited.removeAt(i);
-          });
-        }
-      }
-    });
   }
 
   Widget showEditButton() {
@@ -297,5 +288,52 @@ class _InvitationsState extends State<Invitations> {
         _toggleVisibility();
       },
     );
+  }
+
+  Widget showContinueButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        RaisedButton(
+          child: Text('Continuar'),
+          textColor: Colors.white,
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        InvitationCheckout(invitedFriends: this.guestsList)));
+          },
+        ),
+      ],
+    );
+  }
+
+  void removeFriendFromList(DocumentSnapshot friend) {
+    Firestore.instance
+        .collection('userFriends')
+        .document(friend.documentID)
+        .delete();
+  }
+
+  void addFriendToInviteList(DocumentSnapshot friend, int index) {
+    GuestModel newGuest =
+        new GuestModel(friend.data['name'], friend.data['cid']);
+    setState(() {
+      guestsList.add(newGuest);
+      // friend.data['isSelected'] = true;
+    });
+  }
+
+  void removeInvitedFromList(String cid, int index) {
+    setState(() {
+      for (var i = 0; i < guestsList.length; i++) {
+        if (guestsList.elementAt(i).cid == cid) {
+          setState(() {
+            guestsList.removeAt(i);
+          });
+        }
+      }
+    });
   }
 }

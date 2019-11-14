@@ -14,6 +14,8 @@ class InvitationHistory extends StatefulWidget {
 class _InvitationHistoryState extends State<InvitationHistory> {
   Future _data;
 
+  var database = Firestore.instance;
+
   Future _getPosts() async {
     var firestore = Firestore.instance;
 
@@ -33,7 +35,8 @@ class _InvitationHistoryState extends State<InvitationHistory> {
     return Scaffold(
       appBar: AppBar(),
       body: Container(
-        height: 200,
+        height: MediaQuery.of(context).size.width,
+        // width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
         ),
@@ -54,18 +57,19 @@ class _InvitationHistoryState extends State<InvitationHistory> {
                 ),
               ],
             ),
-            FutureBuilder(
-                future: _data,
-                builder: (_, snapshot) {
+            StreamBuilder(
+                stream: database.collection('inviteHistory').snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return showLoadingCircle();
                   } else {
                     return ListView.builder(
-                        itemCount: snapshot.data.length,
+                        itemCount: snapshot.data.documents.length,
                         itemBuilder: (_, index) {
                           return ListTile(
                             title: _buildHistoryItem(
-                                context, snapshot.data[index]),
+                                context, snapshot.data.documents[index]),
                           );
                         });
                   }
@@ -79,13 +83,13 @@ class _InvitationHistoryState extends State<InvitationHistory> {
   Widget _buildHistoryItem(
       BuildContext context, DocumentSnapshot historySnapshot) {
     return Container(
-      width: 200,
+      width: double.infinity,
       height: ScreenUtil.getInstance().setHeight(132),
       child: Row(
         children: <Widget>[
           Text('Prueba'),
           // _leftSection(historySnapshot),
-          // _middleSection(historySnapshot),
+          _middleSection(historySnapshot),
           // _rightSection(historySnapshot),
         ],
       ),
@@ -111,10 +115,27 @@ class _InvitationHistoryState extends State<InvitationHistory> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              //TO-DO: Mostrar lista de las personas invitadas en la fecha.
-            ],
+          Container(
+            height: double.infinity,
+            child: StreamBuilder(
+              stream: database
+                  .collection('inviteHistory')
+                  .document(historySnapshot.documentID)
+                  .collection('invitedFriends')
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                return ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (_, index ){
+                    return ListTile(
+                            title: guestsList(
+                                context, snapshot.data.documents[index]),
+                          );
+                    },
+                );
+              },
+            ),
           ),
           Text(
             historySnapshot.data['date'],
@@ -128,4 +149,8 @@ class _InvitationHistoryState extends State<InvitationHistory> {
   }
 
   Widget _rightSection(DocumentSnapshot historySnapshot) {}
+
+  Widget guestsList(BuildContext context, DocumentSnapshot guest) {
+    return Text(guest.data['name']);
+  }
 }

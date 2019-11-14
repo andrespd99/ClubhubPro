@@ -16,75 +16,6 @@ class _InvitationMainState extends State<InvitationMain> {
     ScreenUtil.instance =
         ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
 
-    // full screen width and height
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    // height without SafeArea
-
-    Widget backgroundImage(int i) {
-      switch (i) {
-        case 1:
-          {
-            return new Container(
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  colorFilter: new ColorFilter.mode(
-                    Colors.black.withOpacity(0.6), BlendMode.luminosity),
-                  image: AssetImage("lib/assets/images/invitations.jpeg"),
-                  fit: BoxFit.cover)),
-            );
-          }
-        case 2:
-          {
-            return new Container(
-              decoration: new BoxDecoration(
-                image: new DecorationImage(
-                  colorFilter: new ColorFilter.mode(
-                    Colors.black.withOpacity(0.6), BlendMode.luminosity),
-                  image: AssetImage(
-                    "lib/assets/images/invitation_history.jpg"),
-                  fit: BoxFit.cover)),
-            );
-          }
-          break;
-        default:
-      }
-    }
-
-    Widget onTopContent(int i) {
-      switch (i) {
-        case 1:
-          {
-            return new Positioned(
-              right: 10.0,
-              bottom: 20.0,
-              child: Text(
-                'Invitar amigos',
-                style: TextStyle(
-                  fontSize: ScreenUtil.getInstance().setSp(40),
-                  fontWeight: FontWeight.bold),
-              ),
-            );
-          }
-        case 2:
-          {
-            return new Positioned(
-              right: 10.0,
-              bottom: 20.0,
-              child: Text(
-                'Ver historial \n de invitados',
-                style: TextStyle(
-                  fontSize: ScreenUtil.getInstance().setSp(40),
-                  fontWeight: FontWeight.bold),
-              ),
-            );
-          }
-
-          break;
-        default:
-      }
-    }
-
     return Column(
       children: <Widget>[
         //Contenedor registrar invitados
@@ -100,7 +31,7 @@ class _InvitationMainState extends State<InvitationMain> {
               ),
               onTap: () {
                 Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Invitations()));
+                    MaterialPageRoute(builder: (context) => Invitations()));
               },
             ),
           ),
@@ -152,5 +83,69 @@ class _InvitationMainState extends State<InvitationMain> {
         ),
       ],
     );
+  }
+
+  Widget backgroundImage(int i) {
+    switch (i) {
+      case 1:
+        {
+          return new Container(
+            decoration: new BoxDecoration(
+                image: new DecorationImage(
+                    // colorFilter: new ColorFilter.mode(
+                    //   Colors.black.withOpacity(0.6), BlendMode.luminosity),
+                    image: AssetImage("lib/assets/images/invitations.jpeg"),
+                    fit: BoxFit.cover)),
+          );
+        }
+      case 2:
+        {
+          return new Container(
+            decoration: new BoxDecoration(
+                image: new DecorationImage(
+                    // colorFilter: new ColorFilter.mode(
+                    //   Colors.black.withOpacity(0.6), BlendMode.luminosity),
+                    image:
+                        AssetImage("lib/assets/images/invitation_history.jpg"),
+                    fit: BoxFit.cover)),
+          );
+        }
+        break;
+      default:
+    }
+  }
+
+  Widget onTopContent(int i) {
+    switch (i) {
+      case 1:
+        {
+          return new Positioned(
+            right: 10.0,
+            bottom: 20.0,
+            child: Text(
+              'Invitar amigos',
+              style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40),
+                  fontWeight: FontWeight.bold),
+            ),
+          );
+        }
+      case 2:
+        {
+          return new Positioned(
+            right: 10.0,
+            bottom: 20.0,
+            child: Text(
+              'Ver historial \n de invitados',
+              style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40),
+                  fontWeight: FontWeight.bold),
+            ),
+          );
+        }
+
+        break;
+      default:
+    }
   }
 }

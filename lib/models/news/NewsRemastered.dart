@@ -1,15 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhub/UtilWidgets.dart';
 import 'package:clubhub/assets/colors.dart';
 import 'package:clubhub/models/news/ArticleDetail.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
-Icon _bookmarkIconState = new Icon(Icons.bookmark_border);
 
 class News extends StatefulWidget {
+  News({Key key}) : super(key: key);
+
   @override
   _NewsState createState() => _NewsState();
 }
@@ -37,16 +36,8 @@ class _NewsState extends State<News> {
     super.initState();
     _data = _getPosts();
   }
-
   @override
   Widget build(BuildContext context) {
-    _navigateToDetail(DocumentSnapshot article) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ArticleDetail(article: article)));
-    }
-
     return Container(
       child: FutureBuilder(
           future: _data,
@@ -57,11 +48,13 @@ class _NewsState extends State<News> {
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) {
-                    return ListTile(
-                      title: _buildListItem(context, snapshot.data[index]),
-                      onTap: () {
-                        _navigateToDetail(snapshot.data[index]);
-                      },
+                    return SingleChildScrollView(
+                                          child: ListTile(
+                        title: _buildListItem(context, snapshot.data[index]),
+                        onTap: () {
+                          _navigateToDetail(snapshot.data[index]);
+                        },
+                      ),
                     );
                   });
             }
@@ -69,13 +62,13 @@ class _NewsState extends State<News> {
     );
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot article) {
+    Widget _buildListItem(BuildContext context, DocumentSnapshot article) {
     return Column(
       children: <Widget>[
         showArticleTitle(article),
         showArticleImage(article, context),
         SizedBox(
-          height: ScreenUtil().setHeight(50),
+          height: ScreenUtil.getInstance().setHeight(50),
         ),
         Divider()
       ],
@@ -118,19 +111,17 @@ class _NewsState extends State<News> {
   Widget showBookmarker(DocumentSnapshot article) {
     return ClipOval(
       child: Container(
-        width: 44.0,
-        height: 44.0,
+        width: ScreenUtil.getInstance().setWidth(65),
+        height: ScreenUtil.getInstance().setHeight(65),
         color: Colors.white,
         child: InkWell(
           child: Visibility(
             visible: article.data['isBookmarked'],
-            replacement: Icon(Icons.bookmark_border),
+            replacement: Icon(Icons.bookmark_border, size: ScreenUtil.getInstance().setWidth(60),),
             child: Icon(Icons.bookmark),
           ),
           onTap: () {
-            bool aux = !article.data['isBookmarked'];
             _bookmarkIconStateChanger(article.data['isBookmarked'], article);
-            Firestore.instance.collection('news').document(article.documentID).updateData({'isBookmarked': aux});
           },
         ),
       ),
@@ -153,4 +144,11 @@ class _NewsState extends State<News> {
       ),
     );
   }
+
+  void _navigateToDetail(DocumentSnapshot article) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ArticleDetail(article: article)));
+    }
 }

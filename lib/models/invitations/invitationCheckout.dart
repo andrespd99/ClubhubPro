@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhub/Home.dart';
 import 'package:clubhub/assets/colors.dart';
-import 'package:clubhub/models/invitations/FriendInvited.dart';
-import 'package:clubhub/models/invitations/InvitationFinal.dart';
+import 'package:clubhub/models/invitations/InvitationModels.dart';
 import 'package:flutter/material.dart';
-import 'package:clubhub/main.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InvitationCheckout extends StatefulWidget {
-  List<FriendInvited> invitedFriends;
+  List<GuestModel> invitedFriends;
 
   InvitationCheckout({this.invitedFriends});
 
@@ -104,7 +102,7 @@ class InvitationCheckoutState extends State<InvitationCheckout> {
   }
 
   Widget _buildInvitedTile(
-      BuildContext context, FriendInvited friend, int index) {
+      BuildContext context, GuestModel friend, int index) {
     return Row(
       children: <Widget>[
         // Container(
