@@ -2,8 +2,17 @@ import 'package:clubhub/Home.dart';
 import 'package:clubhub/assets/colors.dart';
 import 'package:clubhub/login.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'auth.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(
+      ChangeNotifierProvider<AuthService>(
+        child: MyApp(),
+        builder: (BuildContext context) {
+          return AuthService();
+        },
+      ),
+    );
 
 class MyApp extends StatelessWidget {
   @override
@@ -41,10 +50,23 @@ class MyApp extends StatelessWidget {
         textTheme: clubhubTextTheme,
         buttonTheme: clubhubButtonTheme,
       ),
-      routes: {
+            home: FutureBuilder(
+        // get the Provider, and call the getUser method
+        future: Provider.of<AuthService>(context).getUser(),
+        // wait for the future to resolve and render the appropriate
+        // widget for HomePage or LoginPage
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return snapshot.hasData ? Home() : LoginPage();
+          } else {
+            return Container(color: Colors.white);
+          }
+        },
+      ),
+      /*routes: {
         '/': (context) => LoginPage(),
         '/home': (context) => Home(),
-      },
+      },*/
     );
   }
 }
