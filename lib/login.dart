@@ -1,17 +1,201 @@
-import 'package:clubhub/FormCard.dart';
 import 'package:clubhub/Home.dart';
-import 'package:clubhub/assets/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:clubhub/RegisterPage.dart';
+//import 'package:logincloud/googlepage.dart';
+//import 'package:logincloud/page.dart';
+//import 'package:logincloud/registerpage.dart';
 
-import 'auth.dart';
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Firebase Auth',
+      home: LoginPage(title: 'Firebase Auth'),
+    );
+  }
+}
 
 class LoginPage extends StatefulWidget {
-  @override
+  final String title;
+
+  LoginPage({Key key, this.title}) : super(key: key);
+
   _LoginPageState createState() => _LoginPageState();
 }
 
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  FirebaseUser get currentUser => null;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomPadding: false, //evitar error bottom overflowed
+      body: Form(
+        key: _formKey,
+        //autovalidate: _autovalidate,
+        child: Container(
+          //padding: EdgeInsets.all(15.0),
+          child: Stack(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: ExactAssetImage('assets/images/curved.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                child: new Card(
+                  color: Colors.grey[100],
+                  margin: new EdgeInsets.only(
+                      left: 20.0, right: 20.0, top: 250.0, bottom: 80.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  elevation: 8.0,
+                  child: new Padding(
+                    padding: new EdgeInsets.all(25.0),
+                    child: new Column(
+                      children: <Widget>[
+                        new Container(
+                          child: new TextFormField(
+                            maxLines: 1,
+                            controller: _emailController,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            decoration: new InputDecoration(
+                                labelText: 'Email', icon: Icon(Icons.email)),
+                            onFieldSubmitted: (value) {
+                              //FocusScope.of(context).requestFocus(_phoneFocusNode);
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Type your name';
+                              }
+                            },
+                          ),
+                        ),
+                        new Container(
+                          child: new TextFormField(
+                            maxLines: 1,
+                            controller: _passwordController,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            decoration: new InputDecoration(
+                              labelText: 'Password',
+                              icon: Icon(
+                                Icons.vpn_key,
+                                color: Colors.black,
+                              ),
+                            ),
+                            onFieldSubmitted: (value) {
+                              //FocusScope.of(context).requestFocus(_phoneFocusNode);
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Type your password';
+                              }
+                            },
+                          ),
+                        ),
+                        new Padding(padding: new EdgeInsets.only(top: 30.0)),
+                        new RaisedButton(
+                          color: Colors.blue,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          padding: new EdgeInsets.all(16.0),
+                          child: new Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              new Text(
+                                'Login',
+                                style: new TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          onPressed: () {
+                            signInWithEmail();
+                          },
+                        ),
+                        Divider(),
+                        new RaisedButton(
+                          color: Colors.blue,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0)),
+                          padding: new EdgeInsets.all(16.0),
+
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 6,
+                              right: 32,
+                            ),
+                            child: InkWell(
+                              onTap: () => _pushPage(context, RegisterPage()),
+                              child: Container(
+                                child: Text(
+                                  'Register',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ), onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<FirebaseUser> signInWithEmail() async {
+
+    // marked async
+    FirebaseUser user;
+    try {
+     user = await _auth.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text) as FirebaseUser;
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      if (user != null) {
+        // sign in successful!
+        _pushPage(context, Home(this.currentUser));
+      } else {
+        // sign in unsuccessful
+        print('sign in Not');
+        // ex: prompt the user to try again
+      }
+    }
+  }
+}
+
+void _pushPage(BuildContext context, Widget page) {
+  Navigator.of(context).push(
+    MaterialPageRoute<void>(builder: (_) => page),
+  );
+}
+
+/*
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String _password;
@@ -19,9 +203,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Login Page Flutter Firebase"),
-        ),
         body: Container(
             padding: EdgeInsets.all(20.0),
             child: Form(
@@ -43,27 +224,33 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                       decoration: InputDecoration(labelText: "Password")),
                   SizedBox(height: 20.0),
-                  RaisedButton(child: Text("LOGIN"), onPressed: () async {
-                    final form = _formKey.currentState;
-                    form.save();
-
-                    if (form.validate()) {
-                          var result = await Provider.of<AuthService>(context)
-                              .loginUser(email: _email, password: _password);
-                          if (result != null) {
-                            //Navigator.pushReplacementNamed(context, "/");
-                          } else {
-                            return _buildShowErrorDialog(context,
-                                "Error Logging In With Those Credentials");
+                  RaisedButton(
+                      child: Text("LOGIN"),
+                      onPressed: () async {
+                        final form = _formKey.currentState;
+                        form.save();
+                        if (form.validate()) {
+                          try {
+                            AuthResult result =
+                                await Provider.of<AuthService>(context)
+                                    .loginUser(
+                                        email: _email, password: _password);
+                            print(result);
+                          } on AuthException catch (error) {
+                            // handle the firebase specific error
+                            return _buildErrorDialog(context, error.message);
+                          } on Exception catch (error) {
+                            // gracefully handle anything else that might happen..
+                            return _buildErrorDialog(context, error.toString());
                           }
-                        
-                    }
-                  }),
+                        }
+                      }),
                 ],
               ),
             )));
   }
-Future _buildShowErrorDialog(BuildContext context, _message) {
+
+  Future _buildErrorDialog(BuildContext context, _message) {
     return showDialog(
       builder: (context) {
         return AlertDialog(
@@ -81,8 +268,7 @@ Future _buildShowErrorDialog(BuildContext context, _message) {
       context: context,
     );
   }
-
-}
+} hasta aqui estaba bien fino */
 
 /*class _LoginPageState extends State<LoginPage> {
   // Widget blueCircle = new ClipOval(

@@ -1,9 +1,11 @@
 import 'package:clubhub/Home.dart';
 import 'package:clubhub/assets/colors.dart';
 import 'package:clubhub/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'auth.dart';
+//import 'package:logincloud/loginemail.dart';
 
 void main() => runApp(
       ChangeNotifierProvider<AuthService>(
@@ -50,23 +52,40 @@ class MyApp extends StatelessWidget {
         textTheme: clubhubTextTheme,
         buttonTheme: clubhubButtonTheme,
       ),
-            home: FutureBuilder(
-        // get the Provider, and call the getUser method
+           home:LoginPage(),
+    );
+}
+}
+           /* FutureBuilder<FirebaseUser>(
         future: Provider.of<AuthService>(context).getUser(),
-        // wait for the future to resolve and render the appropriate
-        // widget for HomePage or LoginPage
-        builder: (context, AsyncSnapshot snapshot) {
+        builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return snapshot.hasData ? Home() : LoginPage();
+            // log error to console 
+            if (snapshot.error != null) { 
+              print("error");
+              return Text(snapshot.error.toString());
+            }
+
+            // redirect to the proper page
+            return snapshot.hasData ? Home(snapshot.data) : LoginPage();
           } else {
-            return Container(color: Colors.white);
+            // show loading indicator
+            return LoadingCircle();
           }
         },
       ),
-      /*routes: {
-        '/': (context) => LoginPage(),
-        '/home': (context) => Home(),
-      },*/
     );
   }
 }
+            
+ class LoadingCircle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        child: CircularProgressIndicator(),
+        alignment: Alignment(0.0, 0.0),
+      ),
+    );
+  }
+}*/

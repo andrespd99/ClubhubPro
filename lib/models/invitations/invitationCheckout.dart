@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:clubhub/Home.dart';
 import 'package:clubhub/assets/colors.dart';
 import 'package:clubhub/models/invitations/InvitationModels.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,6 +21,8 @@ class InvitationCheckout extends StatefulWidget {
 class InvitationCheckoutState extends State<InvitationCheckout> {
   static final invitationPrice = 56000.00;
   var total;
+
+  FirebaseUser get currentUser => null; // no estoy segura de esto 
 
   @override
   void initState() {
@@ -155,7 +158,7 @@ class InvitationCheckoutState extends State<InvitationCheckout> {
         }
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => Home()),
+          MaterialPageRoute(builder: (context) => Home(this.currentUser)),
           (Route<dynamic> route) => false,
         );
       },

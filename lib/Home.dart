@@ -3,6 +3,7 @@ import 'package:clubhub/historial_Reservaciones.dart';
 import 'package:clubhub/login.dart';
 import 'package:clubhub/models/invitations/InvitationHistory.dart';
 import 'package:clubhub/models/news/Bookmarks.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:clubhub/models/news/News.dart';
 import 'package:clubhub/assets/colors.dart';
@@ -10,7 +11,10 @@ import 'package:clubhub/assets/colors.dart';
 import 'models/invitations/invitationMain.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
+  //Home({Key key}) : super(key: key);
+   final FirebaseUser currentUser;    
+
+  Home(this.currentUser);
 
   @override
   _HomeState createState() => _HomeState();

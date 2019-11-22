@@ -1,4 +1,5 @@
 import 'package:clubhub/Home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class InvitationFinal extends StatefulWidget {
@@ -9,6 +10,8 @@ class InvitationFinal extends StatefulWidget {
 }
 
 class _InvitationFinalState extends State<InvitationFinal> {
+  FirebaseUser get currentUser => null; //no estoy segura de esto 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +25,7 @@ class _InvitationFinalState extends State<InvitationFinal> {
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => Home()),
+                        MaterialPageRoute(builder: (context) => Home(this.currentUser)),
                         (Route<dynamic> route) => false,
                       );
               },
