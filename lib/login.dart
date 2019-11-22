@@ -249,7 +249,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             )));
   }
-
   Future _buildErrorDialog(BuildContext context, _message) {
     return showDialog(
       builder: (context) {
@@ -286,15 +285,12 @@ class _LoginPageState extends State<LoginPage> {
   //     ),
   //   ),
   // );
-
    bool _isSelected = false;
-
   void _radio() {
     setState(() {
       _isSelected = !_isSelected;
     });
   }
-
   Widget radioButton(bool isSelected) => Container(
         width: 16.0,
         height: 16.0,
@@ -311,7 +307,6 @@ class _LoginPageState extends State<LoginPage> {
               )
             : Container(),
       );
-
   Widget horizontalLine() => Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Container(
@@ -320,7 +315,6 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.black26.withOpacity(.2),
         ),
       );
-
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;

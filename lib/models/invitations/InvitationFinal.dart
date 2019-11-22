@@ -10,7 +10,9 @@ class InvitationFinal extends StatefulWidget {
 }
 
 class _InvitationFinalState extends State<InvitationFinal> {
-  FirebaseUser get currentUser => null; //no estoy segura de esto 
+  get currentUser => null;
+
+  
 
   @override
   Widget build(BuildContext context) {

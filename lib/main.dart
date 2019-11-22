@@ -65,7 +65,6 @@ class MyApp extends StatelessWidget {
               print("error");
               return Text(snapshot.error.toString());
             }
-
             // redirect to the proper page
             return snapshot.hasData ? Home(snapshot.data) : LoginPage();
           } else {
