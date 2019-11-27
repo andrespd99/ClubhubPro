@@ -72,6 +72,14 @@ class _BookmarksState extends State<Bookmarks> {
             Text(
               'No hay mas publicaciones...',
               style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(15)),
+            ),
+            IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                setState(() {
+                  
+                });
+              },
             )
           ]),
         ));
@@ -177,6 +185,7 @@ class _BookmarksState extends State<Bookmarks> {
                   trailingSection(_bookmarks.elementAt(index)),
                 ],
               ),
+              
             );
           }),
     );

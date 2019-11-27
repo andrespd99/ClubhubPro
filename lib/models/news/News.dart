@@ -19,9 +19,7 @@ class _NewsState extends State<News> {
 
   Future _getPosts() async {
     var firestore = Firestore.instance;
-
     QuerySnapshot qn = await firestore.collection('news').getDocuments();
-
     return qn.documents;
   }
 
