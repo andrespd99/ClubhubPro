@@ -93,23 +93,22 @@ class _HomeState extends State<Home> {
             ),
           ),
           ListTile(
-            title: Text('Noticias guardadas'),
-            leading: Icon(Icons.bookmark),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Bookmarks()));}
-          ),
+              title: Text('Noticias guardadas'),
+              leading: Icon(Icons.bookmark),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Bookmarks()));
+              }),
           ListTile(
             title: Text('Historial'),
             leading: Icon(Icons.history),
             onTap: () {
-              Navigator.push( 
-            context,
-            MaterialPageRoute(
-                            builder: (context) =>
-                                HistorialReservaciones(),
-                          ),
-                        );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HistorialReservaciones(),
+                ),
+              );
             },
           ),
           // ListTile(
