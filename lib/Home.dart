@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
       child: new ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text("Valeska De Ponte"),
+            accountName: Text("Valeska De Ponte"), 
             accountEmail: Text("Valeskadeponte@prueba.es"),
             currentAccountPicture: CircleAvatar(backgroundColor: Colors.white),
             decoration: BoxDecoration(
