@@ -28,6 +28,7 @@ var _instance;
 var detailsContext;
 var _colorDateInicial = Colors.white;
 var _colorDateFinal = Colors.white;
+  Future _data;
 
 class Compra {
   String id;
@@ -51,6 +52,19 @@ class _DateTimePickerState extends State<DateTimePicker> {
     );
   }
 }
+
+Future _getPosts() async {
+    var firestore = Firestore.instance;
+
+    QuerySnapshot qn = await firestore.collection('bedrooms').getDocuments();
+
+    return qn.documents;
+  }
+
+  @override
+  void initState() {
+    _data = _getPosts();
+  }
 
 class ListasHabPage extends StatelessWidget {
   @override
@@ -109,7 +123,7 @@ class ListasHabPage extends StatelessWidget {
                                         return new CachedNetworkImage(
                                           imageUrl: snapshot2
                                               .data.documents[0].data.values
-                                              .elementAt(i + 1)
+                                              .elementAt(i)
                                               .toString(),
                                           placeholder: (context, url) =>
                                               CircularProgressIndicator(),
@@ -132,8 +146,8 @@ class ListasHabPage extends StatelessWidget {
                           padding: const EdgeInsets.all(
                               10.0), // Un padding para todo
                           child: Text(
-                            snapshot.data.documents[index].data.values
-                                .elementAt(0)
+                            snapshot.data.documents[index].data['detalles']
+                                
                                 .toString(),
                             softWrap: true,
                           ),
@@ -156,12 +170,9 @@ class ListasHabPage extends StatelessWidget {
                                   icon: const Icon(Icons.attach_money,
                                       size: 26.0, color: Colors.redAccent),
 
-                                  // Esto mostrara 'Me encanta' por la terminal
                                   onPressed: () {},
                                   label: Text(
-                                      snapshot.data.documents[index].data.values
-                                              .elementAt(2)
-                                              .toString() +
+                                      snapshot.data.documents[index].data['precio'].toString() +
                                           ' día',
                                       style: TextStyle(
                                           fontSize: ScreenUtil.getInstance()
@@ -197,13 +208,12 @@ class DetailScreen extends StatelessWidget {
           child: new Column(children: <Widget>[
             // Agregamos una imagen consumida desde internet
             Text(
-              snapshot.data.documents[index].data.values
-                  .elementAt(3)
+              snapshot.data.documents[index].data['title']
                   .toString(),
               softWrap: true,
               style: TextStyle(
-                  fontSize: ScreenUtil.getInstance().setSp(17),
-                  color: kClubhubBlueDark),
+                  fontSize: 16,
+                  ),
             ),
             new Container(
                 child: CarouselSlider(
@@ -227,7 +237,7 @@ class DetailScreen extends StatelessWidget {
                               return CircularProgressIndicator();
                             return new CachedNetworkImage(
                               imageUrl: snapshot2.data.documents[0].data.values
-                                  .elementAt(i + 1)
+                                  .elementAt(i)
                                   .toString(),
                               placeholder: (context, url) =>
                                   CircularProgressIndicator(),
@@ -249,9 +259,9 @@ class DetailScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: 16.0, vertical: 0.0), // Un padding para todo
               child: Text(
-                snapshot.data.documents[index].data.values
-                    .elementAt(0)
+                snapshot.data.documents[index].data['title']
                     .toString(),
+                    style: TextStyle(fontSize: 14),
                 softWrap: true,
               ),
             ),
@@ -276,8 +286,7 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text(
-                        snapshot.data.documents[index].data.values
-                                .elementAt(2)
+                        snapshot.data.documents[index].data['precio']
                                 .toString() +
                             ' día',
                         style: TextStyle(color: kClubhubBlueDark),
@@ -291,25 +300,13 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text(
-                        snapshot.data.documents[index].data.values
-                                .elementAt(1)
+                        snapshot.data.documents[index].data['area']
                                 .toString() +
                             ' area',
                         style: TextStyle(color: kClubhubBlueDark),
                       ),
                     ),
-                    new FlatButton.icon(
-                      // Un icono puede recibir muchos atributos, aqui solo usaremos icono, tamaño y color
-                      icon: const Icon(Icons.check_box_outline_blank,
-                          size: 26.0, color: Colors.redAccent),
-
-                      // Esto mostrara 'Me encanta' por la terminal
-                      onPressed: () {},
-                      label: Text(
-                        '2' + ' camas',
-                        style: TextStyle(color: kClubhubBlueDark),
-                      ),
-                    )
+                   
                   ],
                 )),
 
@@ -334,7 +331,7 @@ class DetailScreen extends StatelessWidget {
                         // Esto mostrara 'Me encanta' por la terminal
                         onPressed: () {},
                         label: Text(
-                          'Acceso a Internet',
+                          'Internet',
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(10),
                               color: kClubhubBlueDark),
@@ -347,7 +344,7 @@ class DetailScreen extends StatelessWidget {
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
                       label: Text(
-                        'Seguridad las 24 horas',
+                        'Seguridad 24/7',
                         style: TextStyle(
                             fontSize: ScreenUtil().setSp(10),
                             color: kClubhubBlueDark),
@@ -374,7 +371,7 @@ class DetailScreen extends StatelessWidget {
 
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
-                      label: Text('Aire acondicionado',
+                      label: Text('Aire Acond.',
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(10),
                               color: kClubhubBlueDark)),
@@ -387,7 +384,7 @@ class DetailScreen extends StatelessWidget {
 
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
-                      label: Text('Servicio a la habitación',
+                      label: Text('Room service',
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(10),
                               color: kClubhubBlueDark)),
@@ -426,7 +423,7 @@ class DetailScreen extends StatelessWidget {
 
                       // Esto mostrara 'Me encanta' por la terminal
                       onPressed: () {},
-                      label: Text('Satélite/TV por cable',
+                      label: Text('Satélite/TV',
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(10),
                               color: kClubhubBlueDark)),
@@ -445,11 +442,10 @@ class DetailScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           detailsContext = context;
-          _habTitle = snapshot.data.documents[index].data.values
-              .elementAt(3)
+          _habTitle = snapshot.data.documents[index].data['title']
               .toString();
 
-          _habPrice = snapshot.data.documents[index].data.values.elementAt(2);
+          _habPrice = snapshot.data.documents[index].data['price'];
 
           _instance = Firestore.instance;
 
@@ -477,8 +473,8 @@ class _MyDialogState extends State<MyDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
         content: Container(
-          height: ScreenUtil.getInstance().setHeight(400),
-          width: ScreenUtil.getInstance().setWidth(260),
+          height: ScreenUtil.getInstance().setHeight(610),
+          width: ScreenUtil.getInstance().setWidth(300),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Container(
@@ -492,13 +488,13 @@ class _MyDialogState extends State<MyDialog> {
                     style: TextStyle(
                         color: kClubhubBlueDark,
                         fontWeight: FontWeight.bold,
-                        fontSize: ScreenUtil.getInstance().setSp(15)),
+                        fontSize: 14),
                   ),
                   Text(
                     "Días a reservar :   ",
                     style: TextStyle(
                         color: kClubhubTextPrimary,
-                        fontSize: ScreenUtil.getInstance().setSp(14),
+                        fontSize: 12,
                         height: 6),
                   ),
                   RaisedButton(
@@ -680,7 +676,7 @@ class _MyDialogState extends State<MyDialog> {
                     style: TextStyle(
                         color: Colors.red,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14.0,
+                        fontSize: 10.0,
                         height: 6),
                   ),
                 ],
@@ -703,7 +699,7 @@ class _MyDialogState extends State<MyDialog> {
             },
             child: Text(
               "Volver",
-              style: TextStyle(color: kClubhubBlueDark, fontSize: ScreenUtil.getInstance().setSp(13)),
+              style: TextStyle(color: kClubhubBlueDark, fontSize: 13),
             ),
           ),
           RaisedButton(
@@ -740,7 +736,7 @@ class _MyDialogState extends State<MyDialog> {
             },
             child: Text(
               "Reservar",
-              style: TextStyle(color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(13))
+              style: TextStyle(color: Colors.white, fontSize: 13)
             ),
           ),
         ]);
