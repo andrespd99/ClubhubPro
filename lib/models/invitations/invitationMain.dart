@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:clubhub/models/invitations/InvitationHistory.dart';
-import 'package:clubhub/models/invitations/Invitations.dart';
+import 'package:clubhub/models/invitations/InvitationsNEW.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

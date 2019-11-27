@@ -740,7 +740,7 @@ class _MyDialogState extends State<MyDialog> {
             },
             child: Text(
               "Reservar",
-              style: TextStyle(color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(13))
+              style: TextStyle(color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(15))
             ),
           ),
         ]);
