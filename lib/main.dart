@@ -15,6 +15,8 @@ class MyApp extends StatelessWidget {
     final clubhubTextTheme = Theme.of(context).textTheme.apply(
           bodyColor: kClubhubTextPrimary,
           displayColor: kClubhubTextPrimary,
+
+          
         );
 
     final appBarTextTheme = Theme.of(context)
