@@ -352,7 +352,7 @@ class _InvitationsState extends State<Invitations> {
 
   void addFriendToInviteList(DocumentSnapshot friend, int index) {
     GuestModel newGuest =
-        new GuestModel(friend.data['name'], friend.data['cid']);
+        new GuestModel( friend.data['docID'],friend.data['name'], friend.data['cid']);
     setState(() {
       guestsList.add(newGuest);
       // friend.data['isSelected'] = true;
